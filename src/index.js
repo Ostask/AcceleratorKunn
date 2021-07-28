@@ -1,15 +1,7 @@
-class Accelerator {
-    constructor(config){
-        this.x = config.x
-        this.y = config.y
-        this.width = config.width
-        this.height = config.height
-        this.setConfig()
-    }
-    setConfig(){
-        console.log("初始化咯")
-    }
-}
+import Accelerator from "./accelerator";
+import Directive from "./directive"
 
-window.Accelerator = Accelerator
-export default Accelerator
+export {
+    Accelerator,
+    Directive
+}
