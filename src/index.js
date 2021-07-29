@@ -1,7 +1,7 @@
 import Accelerator from "./accelerator";
-import Directive from "./directive"
+import VueAccelerator from "./directive"
 
 export {
     Accelerator,
-    Directive
+    VueAccelerator
 }

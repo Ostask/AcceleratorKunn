@@ -1,8 +1,8 @@
 {
     "name": "acceleratorkunn",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "一方通行，一个可以赋予普通元素任意定位，可拖拽，可伸缩大小的插件",
-    "main": "src/index.js",
+    "main": "dist/acceleratorkunn.js",
     "scripts": {
       "dev": "webpack serve --config webpack.dev.config.js",
       "build": "webpack --config webpack.prod.config.js"
@@ -11,7 +11,7 @@
       "type": "git",
       "url": "https://gitee.com/knif/AcceleratorKunn.git"
     },
-    "author": "",
+    "author": "zhangzhou",
     "license": "ISC",
     "devDependencies": {
       "@babel/core": "^7.14.8",
