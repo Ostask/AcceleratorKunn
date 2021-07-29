@@ -25,6 +25,8 @@ class Accelerator {
             autoCount:Accelerator.autoCount
         },...config} //保存原始的config留个底，
 
+        this.config.id = Accelerator.ID //这个id不允许用户来改变
+
         this.domEl = domEl
         this.parentEl = domEl.parentNode
         this.parentElWidth = this.parentEl.clientWidth
@@ -44,7 +46,6 @@ class Accelerator {
      * 初始化元素的大小和位置，并且刷新Accelerator上的静态参数
      */
     _init(){
-        console.log("初始化咯")
         //先计算参数的值
         this._computedConfig(this.config)
         console.log(this.x,this.y,this.width,this.height)
@@ -65,7 +66,6 @@ class Accelerator {
 
         Accelerator.ID++
         Accelerator._instanceList.push(this)
-        console.log(Accelerator._instanceList)
 
         //监听父元素的尺寸
         this.watchParentInterval = setInterval(this.resize.bind(this),300)
@@ -129,9 +129,7 @@ class Accelerator {
         clearInterval(this.watchParentInterval)
         this.watchParentInterval = null
         const index = Accelerator._instanceList.findIndex((instance) => { return this.id === instance.id })
-        console.log(index)
         Accelerator._instanceList.splice(index,1)
-        console.log(Accelerator._instanceList)
     }
 }
 

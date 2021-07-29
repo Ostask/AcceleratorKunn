@@ -3,7 +3,7 @@ import { Accelerator } from "../src/index.js"
 window.onload = () => {
     Accelerator.setStaticConfig({
         x:'0%',
-        y:'20px',
+        y:'4%',
         width:'20%',
         height:'30%'
     })
