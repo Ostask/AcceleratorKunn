@@ -33,7 +33,7 @@ export function onMousemove(e) {
         this.dragOrign.x = e.pageX
         this.dragOrign.y = e.pageY
         this._setStyle()
-        this._updateConfig()
+        this._updatePositionConfig()
     }
 }
 

@@ -48,6 +48,7 @@ class Accelerator {
         this.parentElHeight = getElHeight(this.parentEl)
 
         this.id = null
+        //以下为用户可变动参数
         this.x = null  //x坐标
         this.y = null  //y坐标
         this.width = null //宽度
@@ -55,6 +56,7 @@ class Accelerator {
         this.autoCount = false //是否自动计算下一个位置的值
         this.dragable = true //是否允许拖拽
         this.dragOutable = true //是否允许拖拽超出父元素
+        //以上为用户可变动参数
 
         //drag的参考点
         this.dragOrign = {
@@ -114,8 +116,6 @@ class Accelerator {
         this.autoCount = config.autoCount //是否自动计算下一个将要添加的元素的位置
         this.dragable = config.dragable
         this.dragOutable = config.dragOutable
-
-        console.log(this.y)
     }
     /**
      * 设置元素样式
@@ -128,9 +128,9 @@ class Accelerator {
         this.domEl.style.height = this.height.num + 'px'
     }
     /**
-     * 更新config参数
+     * 更新config的width和height,x,y参数
      */
-    _updateConfig() {
+    _updatePositionConfig() {
         this.config.x = getSizeText(this.x,this.parentElWidth)
         this.config.y = getSizeText(this.y,this.parentElHeight)
         this.config.width = getSizeText(this.width,this.parentElWidth)
@@ -152,6 +152,10 @@ class Accelerator {
         Accelerator.y = getSizeText({num:newY,originUnit:this.y.originUnit},this.parentElHeight)
         Accelerator.width = getSizeText(this.width,this.parentElWidth)
         Accelerator.height = getSizeText(this.height,this.parentElHeight)
+
+        Accelerator.autoCount = this.autoCount
+        Accelerator.dragable = this.dragable
+        Accelerator.dragOutable = this.dragOutable
     }
 
 
@@ -187,8 +191,6 @@ class Accelerator {
                 ...this.config,...attrName
             }
         }
-
-        console.log(this.config)
 
         //重新计算参数值
         this._computedConfig(this.config)
