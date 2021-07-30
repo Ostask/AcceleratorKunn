@@ -1,32 +1,26 @@
 import { Accelerator } from "../src/index.js"
 
 window.onload = () => {
-    Accelerator.setStaticConfig({
-        x:'0%',
-        y:'4%',
-        width:'20%',
-        height:'30%'
-    })
+    const domEl = document.querySelector('#addDom')
+    let ac 
+    let flag = true
     document.querySelector('#add').onclick = () => {
-        const dom = document.createElement('div')
-        dom.style.background = '#ff0000'
-        dom.classList = 'addDom'
-        document.body.appendChild(dom)
-        const a = new Accelerator(dom,{
-            autoCount: true
+        ac && ac.destroy()
+        ac = new Accelerator(domEl,{
+            width:'20%',
+            height:'20%'
         })
-        dom.onclick = function() {
-            a.destroy()
-        }
+        ac.attr({
+            x:'10%',
+            y:'10%'
+        })
+    }
+    document.querySelector('#set').onclick = () => {
+        console.log('click')
+        flag = !flag
+        ac.attr('x','70%')
     }
     document.querySelector('#clear').onclick = () => {
-        let list = document.getElementsByClassName('addDom')
-        console.log(list)
-        // for(let i = 0;i < list.length; i++){
-        //     var parent = list[i].parentElement;
-        //     parent.removeChild(list[i]);
-        //     i--
-        // }
-        Accelerator.destroyAll()
+        ac.destroy()
     }
 }

@@ -60,3 +60,33 @@ export function getSizeText(numObj, refer = getWindowSize().width) {
         return (parseFloat(numObj.num) * 100 / parseFloat(refer)) + numObj.originUnit
     }
 }
+
+export function getElWidth(domEl) {
+    return domEl.offsetWidth
+}
+
+export function getElHeight(domEl) {
+    return domEl.offsetHeight
+}
+
+export function getElX(domEl) {
+    const cssStyle = getComputedStyle(domEl)
+    let isAbsolute = cssStyle.position === 'absolute'
+    if(isAbsolute) {
+        let left = cssStyle.left
+        return left
+    }else{
+        return ''
+    }
+}
+
+export function getElY(domEl) {
+    const cssStyle = getComputedStyle(domEl)
+    let isAbsolute = cssStyle.position === 'absolute'
+    if(isAbsolute) {
+        let top = cssStyle.top
+        return top
+    }else{
+        return ''
+    }
+}
