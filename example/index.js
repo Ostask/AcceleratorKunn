@@ -6,14 +6,7 @@ window.onload = () => {
     let flag = true
     document.querySelector('#add').onclick = () => {
         ac && ac.destroy()
-        ac = new Accelerator(domEl,{
-            width:'20%',
-            height:'20%'
-        })
-        ac.attr({
-            x:'10%',
-            y:'10%'
-        })
+        ac = new Accelerator(domEl)
     }
     document.querySelector('#set').onclick = () => {
         console.log('click')
