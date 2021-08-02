@@ -6,7 +6,9 @@ window.onload = () => {
     let flag = true
     document.querySelector('#add').onclick = () => {
         ac && ac.destroy()
-        ac = new Accelerator(domEl)
+        ac = new Accelerator(domEl,{
+            dragOutable:false
+        })
     }
     document.querySelector('#set').onclick = () => {
         console.log('click')

@@ -2,6 +2,7 @@ export function onMousedown(e) {
     this.dragOrign.x = e.pageX
     this.dragOrign.y = e.pageY
     this.isdragging = true
+    this.domEl.style.userSelect = 'none'
 }
 
 export function onMousemove(e) {
@@ -30,6 +31,8 @@ export function onMousemove(e) {
         }
         this.x.num = newX
         this.y.num = newY
+        this.x1.num = newX + this.width.num
+        this.y1.num = newY + this.height.num
         this.dragOrign.x = e.pageX
         this.dragOrign.y = e.pageY
         this._setStyle()
@@ -40,11 +43,14 @@ export function onMousemove(e) {
 export function onMouseleave(e) {
     if(this.isdragging) {
         this.isdragging = false
+        this.domEl.style.userSelect = 'auto'
+
     }
 }
 
 export function onMouseup(e) {
     this.isdragging = false
+    this.domEl.style.userSelect = 'auto'
 }
 
 export function setDragMethods(_this) {
@@ -54,7 +60,7 @@ export function setDragMethods(_this) {
         _this.bindMouseMove = onMousemove.bind(_this)
         window.addEventListener("mousemove",_this.bindMouseMove)
         _this.bindMouseLeave = onMouseleave.bind(_this)
-        window.addEventListener("mouseleave",_this.bindMouseLeave,false)
+        window.addEventListener("mouseleave",_this.bindMouseLeave)
         _this.bindMouseUp = onMouseup.bind(_this)
         window.addEventListener("mouseup",_this.bindMouseUp)
     }

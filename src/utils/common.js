@@ -90,3 +90,19 @@ export function getElY(domEl) {
         return ''
     }
 }
+
+export function addPrefix(cssText){
+    const text = cssText[cssText.length - 1] === ';' ? cssText : cssText + ';'
+
+    const ms = '-ms-' + text
+    const moz = '-moz-' + text
+    const webkit = '-webkit-' + text
+    const o = '-o-' + text
+
+    return ms + moz + webkit + o + text
+}
+
+export function prevent(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}

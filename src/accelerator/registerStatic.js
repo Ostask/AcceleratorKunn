@@ -7,6 +7,8 @@ export function registerStaticMethod (Accelerator) {
     Accelerator.autoCount = false
     Accelerator.dragable = true
     Accelerator.dragOutable = true
+    Accelerator.resizeable = true
+
     Accelerator._instanceList = []
 
     /**
@@ -21,6 +23,7 @@ export function registerStaticMethod (Accelerator) {
         Accelerator.autoCount = config.autoCount || Accelerator.autoCount
         Accelerator.dragable = config.dragable || Accelerator.dragable
         Accelerator.dragOutable = config.dragOutable || Accelerator.dragOutable
+        Accelerator.resizeable = config.resizeable || Accelerator.resizeable
     }
 
     /**

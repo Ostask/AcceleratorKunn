@@ -11,6 +11,10 @@ import {
     setDragMethods,
     removeDragMethods
 } from './drag'
+import {
+    setResizeMethods,
+    removeResizeMethods
+} from './resize'
 
 class Accelerator {
     /**
@@ -37,7 +41,8 @@ class Accelerator {
             height:domElHeight || Accelerator.height,
             autoCount:Accelerator.autoCount,
             dragable:Accelerator.dragable,
-            dragOutable:Accelerator.dragOutable
+            dragOutable:Accelerator.dragOutable,
+            resizeable:Accelerator.resizeable
         },...config} //保存原始的config留个底，
 
         this.config.id = Accelerator.ID //这个id不允许用户来改变
@@ -56,6 +61,7 @@ class Accelerator {
         this.autoCount = false //是否自动计算下一个位置的值
         this.dragable = true //是否允许拖拽
         this.dragOutable = true //是否允许拖拽超出父元素
+        this.resizeable = true //是否允许改变大小
         //以上为用户可变动参数
 
         //drag的参考点
@@ -63,8 +69,15 @@ class Accelerator {
             x:0,
             y:0
         }
+        //resize的参考节点
+        this.resizeOrign = {
+            x:0,
+            y:0
+        }
         //当前是否在拖拽
         this.isdragging = false
+        //当前往哪个方向拖拽
+        this.resizeMode = null
 
         this.watchParentInterval = null
         this._init()
@@ -101,6 +114,9 @@ class Accelerator {
 
         //设置拖拽
         setDragMethods(this)
+
+        //设置改变大小
+        setResizeMethods(this)
     }
     /**
      * 
@@ -112,10 +128,13 @@ class Accelerator {
         this.y = unify(config.y, this.parentElHeight)  //y坐标
         this.width = unify(config.width, this.parentElWidth) //宽度
         this.height = unify(config.height, this.parentElHeight) //高度
+        this.x1 = {num:this.x.num + this.width.num,originUnit:this.x.originUnit}
+        this.y1 = {num:this.y.num + this.height.num,originUnit:this.y.originUnit}
 
         this.autoCount = config.autoCount //是否自动计算下一个将要添加的元素的位置
         this.dragable = config.dragable
         this.dragOutable = config.dragOutable
+        this.resizeable = config.resizeable
     }
     /**
      * 设置元素样式
@@ -156,6 +175,7 @@ class Accelerator {
         Accelerator.autoCount = this.autoCount
         Accelerator.dragable = this.dragable
         Accelerator.dragOutable = this.dragOutable
+        Accelerator.resizeable = this.resizeable
     }
 
 
@@ -168,6 +188,7 @@ class Accelerator {
         //先判断attrName的类型
         const type = typeof(attrName)
         const orignDragable = this.dragable
+        const originResizeable = this.resizeable
         if(type === 'string'){
             //字符串的话就验证第二个attrValue的值
             if(attrValue || attrValue === false) {
@@ -204,6 +225,13 @@ class Accelerator {
                 removeDragMethods(this)
             }
         }
+        if(this.resizeable != originResizeable) {
+            if(this.resizeable){
+                setResizeMethods(this)
+            }else{
+                removeResizeMethods(this)
+            }
+        }
     }
     /**
      * 刷新大小和位置
@@ -223,6 +251,7 @@ class Accelerator {
     destroy() {
         clearInterval(this.watchParentInterval)
         removeDragMethods(this)
+        removeResizeMethods(this)
         this.watchParentInterval = null
         const index = Accelerator._instanceList.findIndex((instance) => { return this.id === instance.id })
         Accelerator._instanceList.splice(index,1)
