@@ -9,7 +9,12 @@ window.onload = () => {
         domEl.classList = "addDom"
         domEl.innerHTML = '<p>123<p>'
         document.body.appendChild(domEl)
-        const ac = new Accelerator(domEl)
+        const ac = new Accelerator(domEl,{
+            x:'0%',
+            y:'0%',
+            width:'10%',
+            height:'10%'
+        })
     }
     document.querySelector('#set').onclick = () => {
         console.log('click')

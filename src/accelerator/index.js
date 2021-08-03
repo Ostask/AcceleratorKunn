@@ -136,6 +136,7 @@ class Accelerator {
      * @param {*} config 换算一下属性
      */
     _computedConfig(config) {
+        console.log(config)
         this.id = config.id
         const xRes = unify(config.x, this.parentElWidth)
         this.x = xRes.num //x坐标

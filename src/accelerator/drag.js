@@ -44,6 +44,7 @@ export function onMousemove(e) {
         this.dragOrign.y = e.pageY
         this._setStyle()
         this._updatePositionConfig()
+        this.constructor.countAxisLine(this)
     }
 }
 
@@ -58,6 +59,7 @@ export function onMouseleave(e) {
 export function onMouseup(e) {
     this.isdragging = false
     this.domEl.style.userSelect = 'auto'
+    this.constructor.hideAxisLine(this)
 }
 
 export function setDragMethods(_this) {

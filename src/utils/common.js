@@ -106,3 +106,16 @@ export function prevent(e) {
     e.stopPropagation();
     e.preventDefault();
 }
+
+export function getPoints(instance) {
+    let list = []
+    list.push({x:instance.x,y:instance.y})
+    list.push({x:instance.x,y:instance.yCenter})
+    list.push({x:instance.x,y:instance.y1})
+    list.push({x:instance.xCenter,y:instance.y})
+    list.push({x:instance.xCenter,y:instance.y1})
+    list.push({x:instance.x1,y:instance.y})
+    list.push({x:instance.x1,y:instance.yCenter})
+    list.push({x:instance.x1,y:instance.y1})
+    return list
+}
