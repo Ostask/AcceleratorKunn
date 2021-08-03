@@ -36,16 +36,18 @@ export function addControl(domEl) {
     }
 }
 
-export function showControl(_this) {
-    for(let i = 0;i<_this.resizeHandle.length; i++) {
-        _this.resizeHandle[i].style.display = 'block'
+export function showControl() {
+    for(let i = 0;i<this.resizeHandle.length; i++) {
+        this.resizeHandle[i].style.display = 'block'
     }
+    this.active = true
 }
 
-export function hideControl(_this) {
-    for(let i = 0;i<_this.resizeHandle.length; i++) {
-        _this.resizeHandle[i].style.display = 'none'
+export function hideControl() {
+    for(let i = 0;i<this.resizeHandle.length; i++) {
+        this.resizeHandle[i].style.display = 'none'
     }
+    this.active = false
 }
 
 export function resizedown(e, mode, _this) {
@@ -58,8 +60,14 @@ export function resizedown(e, mode, _this) {
 }
 
 export function onActive(e) {
-    this.active = true
-    showControl(this)
+    prevent(e)
+    this.constructor.setActive(this)
+}
+
+export function onUnActive(e) {
+    prevent(e)
+    this.hideControl()
+    this.active = false
 }
 
 export function moveUp(moveY,_this) {
@@ -171,10 +179,9 @@ export function resizeMove(e) {
 }
 
 export function resizeUp(e) {
+    console.log('mouseup')
     this.resizeMode = null
     this.domEl.style.userSelect = 'auto'
-    this.active = false
-    hideControl(this)
 }
 
 export function setResizeMethods(_this) {
@@ -182,6 +189,9 @@ export function setResizeMethods(_this) {
     const {control_tl, control_tm, control_tr, control_mr, control_br, control_bm, control_bl,control_ml } = addControl(_this.domEl)
     const domEl = _this.domEl
     _this.resizeHandle = [control_tl, control_tm, control_tr, control_mr, control_br, control_bm, control_bl,control_ml]
+
+    _this.showControl = showControl.bind(_this)
+    _this.hideControl = hideControl.bind(_this)
 
     //给控制柄添加事件
     //按下按钮的时候记录当前控制大小的方式
@@ -210,12 +220,14 @@ export function setResizeMethods(_this) {
         resizedown(e,'ml',_this)
     })
 
+    _this.bindActive = onActive.bind(_this)
+    _this.domEl.addEventListener('mousedown',_this.bindActive)
     _this.bindResizeMove = resizeMove.bind(_this)
     window.addEventListener('mousemove',_this.bindResizeMove)
     _this.bindResizeUp = resizeUp.bind(_this)
     window.addEventListener('mouseup',_this.bindResizeUp)
-    _this.bindActive = onActive.bind(_this)
-    _this.domEl.addEventListener('click',_this.bindActive)
+    _this.bindUnActive = onUnActive.bind(_this)
+    window.addEventListener('mousedown',_this.bindUnActive)
 
     domEl.appendChild(control_tl)
     domEl.appendChild(control_tm)
@@ -232,7 +244,8 @@ export function removeResizeMethods(_this) {
         _this.domEl.removeChild(_this.resizeHandle[i])
     }
     _this.resizeHandle = []
-    _this.domEl.removeEventListener('click',_this.bindActive)
+    _this.domEl.removeEventListener('mousedown',_this.bindActive)
     window.removeEventListener('mousemove',_this.bindResizeMove)
     window.removeEventListener('mouseup',_this.bindResizeUp)
+    window.removeEventListener('mousedown',_this.bindUnActive)
 }

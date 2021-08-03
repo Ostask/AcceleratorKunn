@@ -1,4 +1,9 @@
+import {
+    prevent
+} from '../utils/common'
+
 export function onMousedown(e) {
+    prevent(e)
     this.dragOrign.x = e.pageX
     this.dragOrign.y = e.pageY
     this.isdragging = true

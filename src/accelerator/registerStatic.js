@@ -26,6 +26,17 @@ export function registerStaticMethod (Accelerator) {
         Accelerator.resizeable = config.resizeable || Accelerator.resizeable
     }
 
+    Accelerator.setActive = function (ac) {
+        for(let i = 0;i < Accelerator._instanceList.length; i++){
+            const instance = Accelerator._instanceList[i]
+            if(instance.id !== ac.id) {
+                instance.hideControl()
+            }else{
+                instance.showControl()
+            }
+        }
+    }
+
     /**
      * 销毁所有Accelerator实例
      */

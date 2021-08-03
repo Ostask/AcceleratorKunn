@@ -89,8 +89,8 @@ class Accelerator {
         this.isdragging = false
         //当前往哪个方向拖拽
         this.resizeMode = null
-        //当前是否在激活状态
         this.active = false
+        this.resizeHandle = []
 
         this.watchParentInterval = null
         this._init()
