@@ -45,96 +45,104 @@ export function resizedown(e, mode, _this) {
     _this.domEl.style.userSelect = 'none'
 }
 
+export function moveUp(moveY,_this) {
+    //加减y和height
+    let newY = _this.y + moveY
+    let newHeight = _this.height - moveY
+    let newY1 = newY + newHeight
+    if(!_this.dragOutable){
+        const minY = 0
+        const maxY = newY1
+        const minHeight = 0
+        const maxHeight = newY1
+        newY = Math.min(maxY,Math.max(minY,newY))
+        newHeight = Math.min(maxHeight,Math.max(minHeight,newHeight))
+    }
+    _this.y = newY
+    _this.height = newHeight
+    _this.y1 = newY + newHeight
+    _this.yCenter = newY + (newHeight / 2)
+}
+
+export function moveDown(moveY, _this) {
+    //加减height
+    let newHeight = _this.height + moveY
+    if(!_this.dragOutable){
+        const minHeight = 0
+        const maxHeight = _this.parentElHeight - _this.y
+        newHeight = Math.min(maxHeight,Math.max(minHeight,newHeight))
+    }
+    _this.height = newHeight
+    _this.y1 = _this.y + newHeight
+    _this.yCenter = _this.y + (newHeight / 2)
+}
+
+export function moveLeft(moveX, _this){
+    //加减x和width
+    let newX = _this.x + moveX
+    let newWidth = _this.width - moveX
+    let newX1 = newX + newWidth
+    if(!_this.dragOutable){
+        const minX = 0
+        const maxX = newX1
+        const minWidth = 0
+        const maxWidth = newX1
+        newX = Math.min(maxX,Math.max(minX,newX))
+        newWidth = Math.min(maxWidth,Math.max(minWidth,newWidth))
+    }
+    _this.x = newX
+    _this.width = newWidth
+    _this.x1 = newX + newWidth
+    _this.xCenter = newX + (newWidth / 2)
+}
+
+export function moveRight(moveX, _this){
+    //加减width
+    let newWidth = _this.width + moveX
+    if(!_this.dragOutable){
+        const minWidth = 0
+        const maxWidth = _this.parentElWidth - _this.x
+        newWidth = Math.min(maxWidth,Math.max(minWidth,newWidth))
+    }
+    _this.width = newWidth
+    _this.x1 = _this.x + newWidth
+    _this.xCenter = _this.x + (newWidth / 2)
+}
+
 export function resizeMove(e) {
-    let newWidth,newHeight,newX,newY,moveX,moveY,newY1,newX1
-    const _this = this
-    function moveUp(){
-        //加减y和height
-        newY = _this.y.num + moveY
-        newHeight = _this.height.num - moveY
-        newY1 = newY + newHeight
-        if(!_this.dragOutable){
-            const minY = 0
-            const maxY = newY1
-            const minHeight = 0
-            const maxHeight = newY1
-            newY = Math.min(maxY,Math.max(minY,newY))
-            newHeight = Math.min(maxHeight,Math.max(minHeight,newHeight))
-        }
-        _this.y.num = newY
-        _this.height.num = newHeight
-        _this.y1.num = newY + newHeight
-    }
-    function moveDown(){
-        //加减height
-        newHeight = _this.height.num + moveY
-        if(!_this.dragOutable){
-            const minHeight = 0
-            const maxHeight = _this.parentElHeight - _this.y.num
-            newHeight = Math.min(maxHeight,Math.max(minHeight,newHeight))
-        }
-        _this.height.num = newHeight
-    }
-    function moveLeft(){
-        //加减x和width
-        newX = _this.x.num + moveX
-        newWidth = _this.width.num - moveX
-        newX1 = newX + newWidth
-        if(!_this.dragOutable){
-            const minX = 0
-            const maxX = newX1
-            const minWidth = 0
-            const maxWidth = newX1
-            newX = Math.min(maxX,Math.max(minX,newX))
-            newWidth = Math.min(maxWidth,Math.max(minWidth,newWidth))
-        }
-        _this.x.num = newX
-        _this.width.num = newWidth
-        _this.x1.num = newX + newWidth
-    }
-    function moveRight(){
-        //加减width
-        newWidth = _this.width.num + moveX
-        if(!_this.dragOutable){
-            const minWidth = 0
-            const maxWidth = _this.parentElWidth - _this.x.num
-            newWidth = Math.min(maxWidth,Math.max(minWidth,newWidth))
-        }
-        _this.width.num = newWidth
-    }
     if(this.resizeMode){
-        moveX = e.pageX - this.resizeOrign.x
-        moveY = e.pageY - this.resizeOrign.y
+        const moveX = e.pageX - this.resizeOrign.x
+        const moveY = e.pageY - this.resizeOrign.y
         //根据resizeMode，计算x,y,width,height的新值
         //根据resizeMode，判断x,y,width,height的最大最小值
         switch(this.resizeMode) {
             case 'tl':
-                moveUp()
-                moveLeft()
+                moveUp(moveY,this)
+                moveLeft(moveX,this)
                 break;
             case 'tm':
-                moveUp()
+                moveUp(moveY,this)
                 break;
             case 'tr':
-                moveUp()
-                moveRight()
+                moveUp(moveY,this)
+                moveRight(moveX,this)
                 break;
             case 'mr':
-                moveRight()
+                moveRight(moveX,this)
                 break;
             case 'br':
-                moveDown()
-                moveRight()
+                moveDown(moveY,this)
+                moveRight(moveX,this)
                 break;
             case 'bm':
-                moveDown()
+                moveDown(moveY,this)
                 break;
             case 'bl':
-                moveDown()
-                moveLeft()
+                moveDown(moveY,this)
+                moveLeft(moveX,this)
                 break;
             case 'ml':
-                moveLeft()
+                moveLeft(moveX,this)
                 break;                            
         }
         this.resizeOrign.x = e.pageX

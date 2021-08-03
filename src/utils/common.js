@@ -53,11 +53,11 @@ export function unify(str = '', refer = getWindowSize().width) {
     }
 }
 
-export function getSizeText(numObj, refer = getWindowSize().width) {
-    if(numObj.originUnit === 'px') {
-        return numObj.num + numObj.originUnit
-    }else if(numObj.originUnit === '%'){
-        return (parseFloat(numObj.num) * 100 / parseFloat(refer)) + numObj.originUnit
+export function getSizeText(num, unit ,refer = getWindowSize().width) {
+    if(unit === 'px') {
+        return num + unit
+    }else if(unit === '%'){
+        return (parseFloat(num) * 100 / parseFloat(refer)) + unit
     }
 }
 

@@ -64,6 +64,17 @@ class Accelerator {
         this.resizeable = true //是否允许改变大小
         //以上为用户可变动参数
 
+        //以下为用户不关心的参数
+        this.x1 = null // 右下角x坐标点
+        this.y1 = null // 右下角y坐标点
+        this.xCenter = null //x中心点
+        this.yCenter = null  //y中心点
+        this.xUnit = null //x的单位 
+        this.yUnit = null //y的单位
+        this.widthUnit = null //width的单位 
+        this.heightUnit = null ///height的单位
+        //以上为用户不关心的参数
+
         //drag的参考点
         this.dragOrign = {
             x:0,
@@ -124,53 +135,67 @@ class Accelerator {
      */
     _computedConfig(config) {
         this.id = config.id
-        this.x = unify(config.x, this.parentElWidth)  //x坐标
-        this.y = unify(config.y, this.parentElHeight)  //y坐标
-        this.width = unify(config.width, this.parentElWidth) //宽度
-        this.height = unify(config.height, this.parentElHeight) //高度
-        this.x1 = {num:this.x.num + this.width.num,originUnit:this.x.originUnit}
-        this.y1 = {num:this.y.num + this.height.num,originUnit:this.y.originUnit}
+        const xRes = unify(config.x, this.parentElWidth)
+        this.x = xRes.num //x坐标
+        this.xUnit = xRes.originUnit
+
+        const yRes = unify(config.y, this.parentElHeight)
+        this.y = yRes.num  //y坐标
+        this.yUnit = yRes.originUnit
+
+        const widthRes = unify(config.width, this.parentElWidth)
+        this.width = widthRes.num //宽度
+        this.widthUnit = widthRes.originUnit
+
+        const heightRes = unify(config.height, this.parentElHeight) 
+        this.height = heightRes.num//高度
+        this.heightUnit = heightRes.originUnit
 
         this.autoCount = config.autoCount //是否自动计算下一个将要添加的元素的位置
         this.dragable = config.dragable
         this.dragOutable = config.dragOutable
         this.resizeable = config.resizeable
+
+        this.x1 = this.x + this.width // 右下角x坐标点
+        this.y1 = this.y + this.height // 右下角y坐标点
+        this.xCenter = this.x + (this.width / 2) //x中心点
+        this.yCenter = this.y + (this.height / 2)  //y中心点
     }
     /**
      * 设置元素样式
      */
     _setStyle() {
         this.domEl.style.position = 'absolute'
-        this.domEl.style.left = this.x.num + 'px'
-        this.domEl.style.top = this.y.num + 'px'
-        this.domEl.style.width = this.width.num + 'px'
-        this.domEl.style.height = this.height.num + 'px'
+        this.domEl.style.left = this.x + 'px'
+        this.domEl.style.top = this.y + 'px'
+        this.domEl.style.width = this.width + 'px'
+        this.domEl.style.height = this.height + 'px'
     }
     /**
      * 更新config的width和height,x,y参数
      */
     _updatePositionConfig() {
-        this.config.x = getSizeText(this.x,this.parentElWidth)
-        this.config.y = getSizeText(this.y,this.parentElHeight)
-        this.config.width = getSizeText(this.width,this.parentElWidth)
-        this.config.height = getSizeText(this.height,this.parentElHeight)
+        this.config.x = getSizeText(this.x,this.xUnit,this.parentElWidth)
+        this.config.y = getSizeText(this.y,this.yUnit,this.parentElHeight)
+        this.config.width = getSizeText(this.width,this.widthUnit,this.parentElWidth)
+        this.config.height = getSizeText(this.height,this.heightUnit,this.parentElHeight)
     }
     /**
      * 更新Accelerator的静态参数
      */
     _updateStaticConfig(){
         //这里方便定位会自动计算下一个元素的位置
-        let newX = this.x.num + this.width.num
-        let newY = this.y.num
-        if((newX + this.width.num) > this.parentElWidth) {
+        let newX = this.x + this.width
+        let newY = this.y
+        if((newX + this.width) > this.parentElWidth) {
             newX = 0
-            newY = this.y.num + this.height.num
+            newY = this.y + this.height
         }
         //这里的初始值会根据之前传入的初始值的单位来计算
-        Accelerator.x = getSizeText({num:newX,originUnit:this.x.originUnit},this.parentElWidth)
-        Accelerator.y = getSizeText({num:newY,originUnit:this.y.originUnit},this.parentElHeight)
-        Accelerator.width = getSizeText(this.width,this.parentElWidth)
-        Accelerator.height = getSizeText(this.height,this.parentElHeight)
+        Accelerator.x = getSizeText(newX,this.xUnit,this.parentElWidth)
+        Accelerator.y = getSizeText(newY,this.yUnit,this.parentElHeight)
+        Accelerator.width = getSizeText(this.width,this.widthUnit,this.parentElWidth)
+        Accelerator.height = getSizeText(this.height,this.heightUnit,this.parentElHeight)
 
         Accelerator.autoCount = this.autoCount
         Accelerator.dragable = this.dragable

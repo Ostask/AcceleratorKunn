@@ -9,11 +9,11 @@ export function onMousemove(e) {
     if(this.isdragging){
         const moveX = e.pageX - this.dragOrign.x
         const moveY = e.pageY - this.dragOrign.y
-        let newX = this.x.num + moveX
-        let newY = this.y.num + moveY
+        let newX = this.x + moveX
+        let newY = this.y + moveY
         if(!this.dragOutable){
-            const maxX = this.parentElWidth - this.width.num
-            const maxY = this.parentElHeight - this.height.num
+            const maxX = this.parentElWidth - this.width
+            const maxY = this.parentElHeight - this.height
             const minX = 0
             const minY = 0
             if(newX < minX) {
@@ -29,10 +29,12 @@ export function onMousemove(e) {
                 newY = maxY
             }
         }
-        this.x.num = newX
-        this.y.num = newY
-        this.x1.num = newX + this.width.num
-        this.y1.num = newY + this.height.num
+        this.x = newX
+        this.y = newY
+        this.x1 = newX + this.width
+        this.y1 = newY + this.height
+        this.xCenter = newX + (this.width / 2)
+        this.yCenter = newY + (this.height / 2)
         this.dragOrign.x = e.pageX
         this.dragOrign.y = e.pageY
         this._setStyle()
