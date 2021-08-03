@@ -5,10 +5,10 @@ window.onload = () => {
     let ac 
     let flag = true
     document.querySelector('#add').onclick = () => {
-        ac && ac.destroy()
-        ac = new Accelerator(domEl,{
-            dragOutable:false
-        })
+        const domEl = document.createElement('div')
+        domEl.classList = "addDom"
+        document.body.appendChild(domEl)
+        const ac = new Accelerator(domEl)
     }
     document.querySelector('#set').onclick = () => {
         console.log('click')
@@ -16,6 +16,6 @@ window.onload = () => {
         ac.attr('x','70%')
     }
     document.querySelector('#clear').onclick = () => {
-        ac.destroy()
+        Accelerator.destroyAll()
     }
 }

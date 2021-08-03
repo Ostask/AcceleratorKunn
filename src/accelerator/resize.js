@@ -4,7 +4,7 @@ import {
 } from '../utils/common'
 
 export function addControl(domEl) {
-    const style = 'border:1px solid #000;width:10px;height:10px;background-color:#fff;position:absolute;'
+    const style = 'border:1px solid #000;width:10px;height:10px;background-color:#fff;position:absolute;display:none;'
 
     const control_tl = document.createElement('div')
     const control_tm = document.createElement('div')
@@ -36,6 +36,18 @@ export function addControl(domEl) {
     }
 }
 
+export function showControl(_this) {
+    for(let i = 0;i<_this.resizeHandle.length; i++) {
+        _this.resizeHandle[i].style.display = 'block'
+    }
+}
+
+export function hideControl(_this) {
+    for(let i = 0;i<_this.resizeHandle.length; i++) {
+        _this.resizeHandle[i].style.display = 'none'
+    }
+}
+
 export function resizedown(e, mode, _this) {
     prevent(e)
     _this.resizeOrign.x = e.pageX
@@ -43,6 +55,11 @@ export function resizedown(e, mode, _this) {
     _this.isdragging = false
     _this.resizeMode = mode
     _this.domEl.style.userSelect = 'none'
+}
+
+export function onActive(e) {
+    this.active = true
+    showControl(this)
 }
 
 export function moveUp(moveY,_this) {
@@ -156,6 +173,8 @@ export function resizeMove(e) {
 export function resizeUp(e) {
     this.resizeMode = null
     this.domEl.style.userSelect = 'auto'
+    this.active = false
+    hideControl(this)
 }
 
 export function setResizeMethods(_this) {
@@ -195,6 +214,8 @@ export function setResizeMethods(_this) {
     window.addEventListener('mousemove',_this.bindResizeMove)
     _this.bindResizeUp = resizeUp.bind(_this)
     window.addEventListener('mouseup',_this.bindResizeUp)
+    _this.bindActive = onActive.bind(_this)
+    _this.domEl.addEventListener('click',_this.bindActive)
 
     domEl.appendChild(control_tl)
     domEl.appendChild(control_tm)
@@ -211,6 +232,7 @@ export function removeResizeMethods(_this) {
         _this.domEl.removeChild(_this.resizeHandle[i])
     }
     _this.resizeHandle = []
+    _this.domEl.removeEventListener('click',_this.bindActive)
     window.removeEventListener('mousemove',_this.bindResizeMove)
     window.removeEventListener('mouseup',_this.bindResizeUp)
 }
