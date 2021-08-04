@@ -48,11 +48,6 @@ window.onload = () => {
             console.log('选中了')
         })
     }
-    document.querySelector('#set').onclick = () => {
-        console.log('click')
-        flag = !flag
-        ac.attr('x','70%')
-    }
     document.querySelector('#clear').onclick = () => {
         Accelerator.destroyAll()
     }

@@ -179,6 +179,7 @@ export function resizeUp(e) {
     if(this.resizeMode) {
         this.resizeMode = null
         this.domEl.style.userSelect = 'auto'
+        this.hideAxisLine()
         this.emit('zoomEnd',{target:this})
     }
 }
