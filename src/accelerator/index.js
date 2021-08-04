@@ -1,10 +1,64 @@
+/**
+ * 目前可传的参数：
+ * domEl: 绑定的dom元素
+ * config = {
+ *    x : x坐标  String | Number
+      y: y坐标   String | Number
+      width : 宽度 String | Number
+      height : 高度  String | Number
+      autoCount : 是否自动计算下一个位置的值 Boolean
+      dragable : 是否允许拖拽 Boolean
+      dragOutable : 是否允许拖拽超出父元素
+      resizeable : 是否允许改变大小
+      helpAxis : 辅助线
+      adsort : 吸附
+ * }
+
+    //可触发事件
+
+    this.on('destroyed',function() {
+        console.log('被销毁了')
+    })
+    this.on('beforeDestroy',function() {
+        console.log('马上被销毁了')
+    })
+    this.on('dragStart',function() {
+        console.log('开始拖拽')
+    })
+    this.on('dragMove',function() {
+        console.log('在拖拽')
+    })
+    this.on('dragEnd',function() {
+        console.log('拖拽结束')
+    })
+    this.on('zoomStart',function() {
+        console.log('开始缩放')
+    })
+    this.on('zoomMove',function(e) {
+        console.log('缩放类型'+e.type)
+    })
+    this.on('zoomEnd',function(e) {
+        console.log('缩放结束')
+    })
+    this.on('resize',function(e) {
+        console.log('父元素大小改变')
+    })
+    this.on('update',function(e) {
+        console.log('更新了config')
+    })
+    this.on('select',function(e) {
+        console.log('选中了，其实就是点击')
+    })
+ */
+
 import { 
     unify,
     getSizeText,
     getElWidth,
     getElHeight,
     getElX,
-    getElY
+    getElY,
+    prevent
 } from '../utils/common'
 import { registerStaticMethod } from './registerStatic'
 import {
@@ -21,14 +75,16 @@ import {
 import {
     registerAdsort
 } from './absort'
+import Event from './event'
 
-class Accelerator {
+class Accelerator extends Event{
     /**
      * 
      * @param {*} domEl dom元素，必传
      * @param {*} config  配置项
      */
     constructor(domEl,config = {}){
+        super()
         if(!domEl){
             throw Error('Accelerator 必须绑定一个dom元素')
         }
@@ -70,6 +126,8 @@ class Accelerator {
         this.dragable = true //是否允许拖拽
         this.dragOutable = true //是否允许拖拽超出父元素
         this.resizeable = true //是否允许改变大小
+        this.helpAxis = true //辅助线
+        this.adsort = true //吸附
         //以上为用户可变动参数
 
         //以下为用户不关心的参数
@@ -81,8 +139,6 @@ class Accelerator {
         this.yUnit = null //y的单位
         this.widthUnit = null //width的单位 
         this.heightUnit = null ///height的单位
-        this.helpAxis = true //辅助线
-        this.adsort = true //吸附
         //以上为用户不关心的参数
 
         //drag的参考点
@@ -135,6 +191,9 @@ class Accelerator {
         //监听父元素的尺寸
         this.watchParentInterval = setInterval(this.resize.bind(this),300)
 
+        //选中
+        this.bindSelect = this.select.bind(this)
+        this.domEl.addEventListener('mousedown',this.bindSelect)
 
         //设置拖拽
         setDragMethods(this)
@@ -201,6 +260,7 @@ class Accelerator {
         this.config.y = getSizeText(this.y,this.yUnit,this.parentElHeight)
         this.config.width = getSizeText(this.width,this.widthUnit,this.parentElWidth)
         this.config.height = getSizeText(this.height,this.heightUnit,this.parentElHeight)
+        this.emit('update',{target:this})
     }
     /**
      * 更新Accelerator的静态参数
@@ -281,6 +341,7 @@ class Accelerator {
                 removeResizeMethods(this)
             }
         }
+        this.emit('update',{target:this})
     }
     /**
      * 刷新大小和位置
@@ -289,21 +350,29 @@ class Accelerator {
         let width = getElWidth(this.parentEl)
         let height = getElHeight(this.parentEl)
         if(width!=this.parentElWidth || height!=this.parentElHeight) {
-            console.log('父元素大小变了啊喂')
             this.parentElWidth = width
             this.parentElHeight = height
             this._computedConfig(this.config)
             //先设置元素样式
             this._setStyle()
+            this.emit('resize',{target:this})
         }
     }
+    select(e) {
+        prevent(e)
+        this.constructor.setActive(this)
+        this.emit('select',{target:this})
+    }
     destroy() {
+        this.emit('beforeDestroy',{target:this})
         clearInterval(this.watchParentInterval)
         removeDragMethods(this)
         removeResizeMethods(this)
+        this.domEl.removeEventListener('mousedown',this.bindSelect)
         this.watchParentInterval = null
         const index = Accelerator._instanceList.findIndex((instance) => { return this.id === instance.id })
         Accelerator._instanceList.splice(index,1)
+        this.emit('destroyed',{target:this})
     }
 }
 

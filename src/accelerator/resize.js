@@ -40,14 +40,12 @@ export function showControl() {
     for(let i = 0;i<this.resizeHandle.length; i++) {
         this.resizeHandle[i].style.display = 'block'
     }
-    this.active = true
 }
 
 export function hideControl() {
     for(let i = 0;i<this.resizeHandle.length; i++) {
         this.resizeHandle[i].style.display = 'none'
     }
-    this.active = false
 }
 
 export function resizedown(e, mode, _this) {
@@ -57,17 +55,12 @@ export function resizedown(e, mode, _this) {
     _this.isdragging = false
     _this.resizeMode = mode
     _this.domEl.style.userSelect = 'none'
-}
-
-export function onActive(e) {
-    prevent(e)
-    this.constructor.setActive(this)
+    _this.emit('zoomStart',{target:this})
 }
 
 export function onUnActive(e) {
     prevent(e)
     this.hideControl()
-    this.active = false
 }
 
 export function moveUp(moveY,_this) {
@@ -178,12 +171,16 @@ export function resizeMove(e) {
         if(this.helpAxis) {
             this.countAxisLine()
         }
+        this.emit('zoomMove',{target:this,type:this.resizeMode})
     }
 }
 
 export function resizeUp(e) {
-    this.resizeMode = null
-    this.domEl.style.userSelect = 'auto'
+    if(this.resizeMode) {
+        this.resizeMode = null
+        this.domEl.style.userSelect = 'auto'
+        this.emit('zoomEnd',{target:this})
+    }
 }
 
 export function setResizeMethods(_this) {
@@ -225,8 +222,6 @@ export function setResizeMethods(_this) {
         resizedown(e,'ml',_this)
     })
 
-    _this.bindActive = onActive.bind(_this)
-    _this.domEl.addEventListener('mousedown',_this.bindActive)
     _this.bindResizeMove = resizeMove.bind(_this)
     window.addEventListener('mousemove',_this.bindResizeMove)
     _this.bindResizeUp = resizeUp.bind(_this)
@@ -249,7 +244,6 @@ export function removeResizeMethods(_this) {
         _this.domEl.removeChild(_this.resizeHandle[i])
     }
     _this.resizeHandle = []
-    _this.domEl.removeEventListener('mousedown',_this.bindActive)
     window.removeEventListener('mousemove',_this.bindResizeMove)
     window.removeEventListener('mouseup',_this.bindResizeUp)
     window.removeEventListener('mousedown',_this.bindUnActive)

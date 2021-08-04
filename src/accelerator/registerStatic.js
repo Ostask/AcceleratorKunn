@@ -32,9 +32,15 @@ export function registerStaticMethod (Accelerator) {
         for(let i = 0;i < Accelerator._instanceList.length; i++){
             const instance = Accelerator._instanceList[i]
             if(instance.id !== ac.id) {
-                instance.hideControl()
+                if(instance.resizeable){
+                    instance.hideControl()
+                }
+                instance.active = false
             }else{
-                instance.showControl()
+                if(instance.resizeable){
+                    instance.showControl()
+                }
+                instance.active = true
             }
         }
     }
