@@ -175,6 +175,7 @@ export function resizeMove(e) {
 
         this._setStyle()
         this._updatePositionConfig()
+        this.constructor.countAxisLine(this)
     }
 }
 
@@ -182,6 +183,7 @@ export function resizeUp(e) {
     console.log('mouseup')
     this.resizeMode = null
     this.domEl.style.userSelect = 'auto'
+    this.constructor.hideAxisLine(this)
 }
 
 export function setResizeMethods(_this) {
