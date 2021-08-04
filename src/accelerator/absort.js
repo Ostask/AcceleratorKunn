@@ -53,6 +53,7 @@ export function countAdsorb(e,moveX,moveY) {
             break;
         }
     }
+    //根据变动的是x还是y，修正this.dragOrigin
     if(res == 'x') { 
         if(Math.abs(moveX) > DISTANCE) {
             this.dragOrign.x = e.pageX
