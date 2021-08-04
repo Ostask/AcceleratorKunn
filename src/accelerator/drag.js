@@ -40,11 +40,19 @@ export function onMousemove(e) {
         this.y1 = newY + this.height
         this.xCenter = newX + (this.width / 2)
         this.yCenter = newY + (this.height / 2)
-        this.dragOrign.x = e.pageX
-        this.dragOrign.y = e.pageY
+        let flag =false
+        if(this.adsort) {
+            flag = this.countAdsorb(e,moveX,moveY)
+        }
+        if(!flag) {
+            this.dragOrign.x = e.pageX
+            this.dragOrign.y = e.pageY
+        }
         this._setStyle()
         this._updatePositionConfig()
-        this.constructor.countAxisLine(this)
+        if(this.helpAxis) {
+            this.countAxisLine()
+        }
     }
 }
 
@@ -59,7 +67,7 @@ export function onMouseleave(e) {
 export function onMouseup(e) {
     this.isdragging = false
     this.domEl.style.userSelect = 'auto'
-    this.constructor.hideAxisLine(this)
+    this.hideAxisLine(this)
 }
 
 export function setDragMethods(_this) {

@@ -175,18 +175,21 @@ export function resizeMove(e) {
 
         this._setStyle()
         this._updatePositionConfig()
-        this.constructor.countAxisLine(this)
+        if(this.helpAxis) {
+            this.countAxisLine()
+        }
     }
 }
 
 export function resizeUp(e) {
-    console.log('mouseup')
     this.resizeMode = null
     this.domEl.style.userSelect = 'auto'
-    this.constructor.hideAxisLine(this)
 }
 
 export function setResizeMethods(_this) {
+    if(!_this.resizeable){
+        return false
+    }
     //先给添加8个控制柄
     const {control_tl, control_tm, control_tr, control_mr, control_br, control_bm, control_bl,control_ml } = addControl(_this.domEl)
     const domEl = _this.domEl

@@ -15,6 +15,12 @@ import {
     setResizeMethods,
     removeResizeMethods
 } from './resize'
+import {
+    registerAxis
+} from './axis'
+import {
+    registerAdsort
+} from './absort'
 
 class Accelerator {
     /**
@@ -42,7 +48,9 @@ class Accelerator {
             autoCount:Accelerator.autoCount,
             dragable:Accelerator.dragable,
             dragOutable:Accelerator.dragOutable,
-            resizeable:Accelerator.resizeable
+            resizeable:Accelerator.resizeable,
+            helpAxis:Accelerator.helpAxis,
+            adsort:Accelerator.adsort
         },...config} //保存原始的config留个底，
 
         this.config.id = Accelerator.ID //这个id不允许用户来改变
@@ -73,6 +81,8 @@ class Accelerator {
         this.yUnit = null //y的单位
         this.widthUnit = null //width的单位 
         this.heightUnit = null ///height的单位
+        this.helpAxis = true //辅助线
+        this.adsort = true //吸附
         //以上为用户不关心的参数
 
         //drag的参考点
@@ -125,11 +135,18 @@ class Accelerator {
         //监听父元素的尺寸
         this.watchParentInterval = setInterval(this.resize.bind(this),300)
 
+
         //设置拖拽
         setDragMethods(this)
 
         //设置改变大小
         setResizeMethods(this)
+
+        //设置参考线
+        registerAxis(this)
+
+        //设置吸附
+        registerAdsort(this)
     }
     /**
      * 
@@ -158,6 +175,8 @@ class Accelerator {
         this.dragable = config.dragable
         this.dragOutable = config.dragOutable
         this.resizeable = config.resizeable
+        this.helpAxis = config.helpAxis
+        this.adsort = config.adsort
 
         this.x1 = this.x + this.width // 右下角x坐标点
         this.y1 = this.y + this.height // 右下角y坐标点
@@ -204,6 +223,8 @@ class Accelerator {
         Accelerator.dragable = this.dragable
         Accelerator.dragOutable = this.dragOutable
         Accelerator.resizeable = this.resizeable
+        Accelerator.helpAxis = this.helpAxis
+        Accelerator.adsort = this.adsort
     }
 
 
