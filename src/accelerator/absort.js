@@ -82,5 +82,5 @@ export function countAdsorb(e,moveX,moveY) {
 }
 
 export function registerAdsort(_this) {
-    _this.countAdsorb = countAdsorb.bind(_this)
+    _this.countAdsorb = countAdsorb
 }

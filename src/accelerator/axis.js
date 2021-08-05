@@ -126,6 +126,6 @@ export function hideAxisLine() {
 }
 
 export function registerAxis(_this) {
-    _this.countAxisLine = countAxisLine.bind(_this)
-    _this.hideAxisLine = hideAxisLine.bind(_this)
+    _this.countAxisLine = countAxisLine
+    _this.hideAxisLine = hideAxisLine
 }

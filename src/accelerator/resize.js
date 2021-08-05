@@ -193,8 +193,8 @@ export function setResizeMethods(_this) {
     const domEl = _this.domEl
     _this.resizeHandle = [control_tl, control_tm, control_tr, control_mr, control_br, control_bm, control_bl,control_ml]
 
-    _this.showControl = showControl.bind(_this)
-    _this.hideControl = hideControl.bind(_this)
+    _this.showControl = showControl
+    _this.hideControl = hideControl
 
     //给控制柄添加事件
     //按下按钮的时候记录当前控制大小的方式
