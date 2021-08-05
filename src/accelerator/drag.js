@@ -13,6 +13,7 @@ export function onMousedown(e) {
 
 export function onMousemove(e) {
     if(this.isdragging){
+        this.domEl.classList.add("ac_dragging")
         const moveX = e.pageX - this.dragOrign.x
         const moveY = e.pageY - this.dragOrign.y
         let newX = this.x + moveX
@@ -60,6 +61,7 @@ export function onMousemove(e) {
 
 export function onMouseleave(e) {
     if(this.isdragging) {
+        this.domEl.classList.remove("ac_dragging")
         this.isdragging = false
         this.domEl.style.userSelect = 'auto'
         if(this.helpAxis) {
@@ -71,6 +73,7 @@ export function onMouseleave(e) {
 
 export function onMouseup(e) {
     if(this.isdragging) {
+        this.domEl.classList.remove("ac_dragging")
         this.isdragging = false
         this.domEl.style.userSelect = 'auto'
         if(this.helpAxis) {

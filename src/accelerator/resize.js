@@ -1,6 +1,6 @@
 import {
     addPrefix,
-    prevent
+    prevent,
 } from '../utils/common'
 
 export function addControl(domEl,_this) {
@@ -51,12 +51,14 @@ export function addControl(domEl,_this) {
 }
 
 export function showControl() {
+    this.domEl.classList.add("ac_active")
     for(let i = 0;i<this.resizeHandle.length; i++) {
         this.resizeHandle[i].style.display = 'block'
     }
 }
 
 export function hideControl() {
+    this.domEl.classList.remove("ac_active")
     for(let i = 0;i<this.resizeHandle.length; i++) {
         this.resizeHandle[i].style.display = 'none'
     }
@@ -90,6 +92,7 @@ export function moveUp(moveY,_this) {
         newY = Math.min(maxY,Math.max(minY,newY))
         newHeight = Math.min(maxHeight,Math.max(minHeight,newHeight))
     }
+    newHeight = Math.max(0,newHeight)
     _this.y = newY
     _this.height = newHeight
     _this.y1 = newY + newHeight
@@ -104,6 +107,7 @@ export function moveDown(moveY, _this) {
         const maxHeight = _this.parentElHeight - _this.y
         newHeight = Math.min(maxHeight,Math.max(minHeight,newHeight))
     }
+    newHeight = Math.max(0,newHeight)
     _this.height = newHeight
     _this.y1 = _this.y + newHeight
     _this.yCenter = _this.y + (newHeight / 2)
@@ -122,6 +126,7 @@ export function moveLeft(moveX, _this){
         newX = Math.min(maxX,Math.max(minX,newX))
         newWidth = Math.min(maxWidth,Math.max(minWidth,newWidth))
     }
+    newWidth = Math.max(0,newWidth)
     _this.x = newX
     _this.width = newWidth
     _this.x1 = newX + newWidth
@@ -136,6 +141,7 @@ export function moveRight(moveX, _this){
         const maxWidth = _this.parentElWidth - _this.x
         newWidth = Math.min(maxWidth,Math.max(minWidth,newWidth))
     }
+    newWidth = Math.max(0,newWidth)
     _this.width = newWidth
     _this.x1 = _this.x + newWidth
     _this.xCenter = _this.x + (newWidth / 2)
@@ -143,6 +149,7 @@ export function moveRight(moveX, _this){
 
 export function resizeMove(e) {
     if(this.resizeMode){
+        this.domEl.classList.add("ac_resizing")
         const moveX = e.pageX - this.resizeOrign.x
         const moveY = e.pageY - this.resizeOrign.y
         //根据resizeMode，计算x,y,width,height的新值
@@ -191,6 +198,7 @@ export function resizeMove(e) {
 
 export function resizeUp(e) {
     if(this.resizeMode) {
+        this.domEl.classList.remove("ac_resizing")
         this.resizeMode = null
         this.domEl.style.userSelect = 'auto'
         if(this.helpAxis) {

@@ -16,6 +16,16 @@
       resizeClass:控制柄样式 | String
  * }
 
+   //可用的css class
+    ac_line ：辅助线
+    x_line ：竖线辅助线（注意x是指x坐标为固定值，所以书竖线）
+    x_line_0, x_line_1, x_line_2: 第1,2,3条竖向辅助线
+    y_line : 横线辅助线
+    y_line_0, y_line_1, y_line_2 : 第1,2,3条横线辅助线   
+    ac_resizing： 正在调整大小中
+    ac_dragging： 正在拖动中
+    ac_active： 当前激活
+
     //可触发事件
 
     this.on('destroyed',function() {
