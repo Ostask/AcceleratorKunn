@@ -4,7 +4,7 @@
  * @returns 
  */
 export function getNumAndUnit(str) {
-    let reg = /([0-9]+\.*[0-9]*)\s*([a-zA-z%]*)/ig
+    let reg = /(\-*[0-9]+\.*[0-9]*)\s*([a-zA-z%]*)/ig
     let res = reg.exec(str)
     if(res) {
         return {
