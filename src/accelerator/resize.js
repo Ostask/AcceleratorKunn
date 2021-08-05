@@ -55,7 +55,7 @@ export function resizedown(e, mode, _this) {
     _this.isdragging = false
     _this.resizeMode = mode
     _this.domEl.style.userSelect = 'none'
-    _this.emit('zoomStart',{target:this})
+    _this.emit('zoomStart',{target:_this,type:_this.resizeMode,event:e})
 }
 
 export function onUnActive(e) {
@@ -171,7 +171,7 @@ export function resizeMove(e) {
         if(this.helpAxis) {
             this.countAxisLine()
         }
-        this.emit('zoomMove',{target:this,type:this.resizeMode})
+        this.emit('zoomMove',{target:this,type:this.resizeMode,event:e})
     }
 }
 
@@ -179,8 +179,10 @@ export function resizeUp(e) {
     if(this.resizeMode) {
         this.resizeMode = null
         this.domEl.style.userSelect = 'auto'
-        this.hideAxisLine()
-        this.emit('zoomEnd',{target:this})
+        if(this.helpAxis) {
+            this.hideAxisLine()
+        }
+        this.emit('zoomEnd',{target:this,type:this.resizeMode,event:e})
     }
 }
 

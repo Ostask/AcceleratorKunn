@@ -8,7 +8,7 @@ export function onMousedown(e) {
     this.dragOrign.y = e.pageY
     this.isdragging = true
     this.domEl.style.userSelect = 'none'
-    this.emit('dragStart',{target:this})
+    this.emit('dragStart',{target:this,event:e})
 }
 
 export function onMousemove(e) {
@@ -54,7 +54,7 @@ export function onMousemove(e) {
         if(this.helpAxis) {
             this.countAxisLine()
         }
-        this.emit('dragMove',{target:this})
+        this.emit('dragMove',{target:this,event:e})
     }
 }
 
@@ -62,8 +62,10 @@ export function onMouseleave(e) {
     if(this.isdragging) {
         this.isdragging = false
         this.domEl.style.userSelect = 'auto'
-        this.hideAxisLine()
-        this.emit('dragEnd',{target:this})
+        if(this.helpAxis) {
+            this.hideAxisLine()
+        }
+        this.emit('dragEnd',{target:this,event:e})
     }
 }
 
@@ -71,8 +73,10 @@ export function onMouseup(e) {
     if(this.isdragging) {
         this.isdragging = false
         this.domEl.style.userSelect = 'auto'
-        this.hideAxisLine()
-        this.emit('dragEnd',{target:this})
+        if(this.helpAxis) {
+            this.hideAxisLine()
+        }
+        this.emit('dragEnd',{target:this,event:e})
     }
 }
 

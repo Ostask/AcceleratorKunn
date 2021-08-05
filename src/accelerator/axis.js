@@ -102,13 +102,15 @@ import { getPoints } from '../utils/common'
             const xPos1 = Math.min(...xList)
             const xPos2 = Math.max(...xList)
             const line = this.parentEl.querySelector('.y_line_'+i)
-            line.style.top = yPos + 'px'
-            line.style.left = xPos1 + 'px'
-            line.style.width = (xPos2 - xPos1) + 'px'
-            line.style.display = 'block'
+            if(line) {
+                line.style.top = yPos + 'px'
+                line.style.left = xPos1 + 'px'
+                line.style.width = (xPos2 - xPos1) + 'px'
+                line.style.display = 'block'
+            }
         }else{
             const line = this.parentEl.querySelector('.y_line_'+i)
-            line.style.display = 'none'
+            if(line)line.style.display = 'none'
         }
     }
 }
@@ -116,12 +118,12 @@ import { getPoints } from '../utils/common'
 export function hideAxisLine() {
     for(let i = 0;i < 3; i++) {
         const line = this.parentEl.querySelector('.x_line_'+i)
-        line.style.display = 'none'
+        if(line)line.style.display = 'none'
     }
 
     for(let i = 0;i < 3; i++) {
         const line = this.parentEl.querySelector('.y_line_'+i)
-        line.style.display = 'none'
+        if(line)line.style.display = 'none'
     }
 }
 
