@@ -90,6 +90,8 @@ const component = {
         console.log('config',config)
         this.Ac = new Accelerator(this.$refs.acceleratorRef,config)
 
+        this.$emit('created',{target:this.Ac})
+
         this.Ac.on('destroyed',(e) => {
             this.$emit('destroyed',e)
         })
