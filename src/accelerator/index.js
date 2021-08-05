@@ -12,6 +12,8 @@
       resizeable : 是否允许改变大小
       helpAxis : 辅助线
       adsort : 吸附
+      axisColor:参考线颜色 | String
+      resizeClass:控制柄样式 | String
  * }
 
     //可触发事件
@@ -106,7 +108,9 @@ class Accelerator extends Event{
             dragOutable:Accelerator.dragOutable,
             resizeable:Accelerator.resizeable,
             helpAxis:Accelerator.helpAxis,
-            adsort:Accelerator.adsort
+            adsort:Accelerator.adsort,
+            axisColor:Accelerator.axisColor,
+            resizeClass:Accelerator.resizeClass
         },...config} //保存原始的config留个底，
 
         this.config.id = Accelerator.ID //这个id不允许用户来改变
@@ -128,6 +132,8 @@ class Accelerator extends Event{
         this.resizeable = true //是否允许改变大小
         this.helpAxis = true //辅助线
         this.adsort = true //吸附
+        this.axisColor = null
+        this.resizeClass = null
         //以上为用户可变动参数
 
         //以下为用户不关心的参数
@@ -235,6 +241,8 @@ class Accelerator extends Event{
         this.resizeable = config.resizeable
         this.helpAxis = config.helpAxis
         this.adsort = config.adsort
+        this.axisColor = config.axisColor
+        this.resizeClass = config.resizeClass
 
         this.x1 = this.x + this.width // 右下角x坐标点
         this.y1 = this.y + this.height // 右下角y坐标点
@@ -297,6 +305,8 @@ class Accelerator extends Event{
         const type = typeof(attrName)
         const orignDragable = this.dragable
         const originResizeable = this.resizeable
+        const originResizeClass = this.resizeClass
+        const originAxisColor = this.axisColor
         if(type === 'string'){
             //字符串的话就验证第二个attrValue的值
             if(attrValue || attrValue === false) {
@@ -321,6 +331,10 @@ class Accelerator extends Event{
             }
         }
 
+        if(!this.config.axisColor) {
+            this.config.axisColor = Accelerator.axisColor
+        }
+
         //重新计算参数值
         this._computedConfig(this.config)
         //重新设置位置
@@ -339,6 +353,13 @@ class Accelerator extends Event{
             }else{
                 removeResizeMethods(this)
             }
+        }
+        if(this.axisColor != originAxisColor) {
+            this.removeAxisLine()
+        }
+        if(this.resizeClass != originResizeClass) {
+            removeResizeMethods(this)
+            setResizeMethods(this)
         }
         this.emit('update',{target:this})
     }

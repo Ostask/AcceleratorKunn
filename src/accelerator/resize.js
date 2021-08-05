@@ -3,8 +3,11 @@ import {
     prevent
 } from '../utils/common'
 
-export function addControl(domEl) {
-    const style = 'border:1px solid #000;width:10px;height:10px;background-color:#fff;position:absolute;display:none;'
+export function addControl(domEl,_this) {
+    let style = 'border:1px solid #8c8c8c;border-radius:50%;width:10px;height:10px;background-color:#fff;position:absolute;display:none;'
+    if(_this.resizeClass) {
+        style = 'position:absolute;display:none;'
+    }
 
     const control_tl = document.createElement('div')
     const control_tm = document.createElement('div')
@@ -14,6 +17,17 @@ export function addControl(domEl) {
     const control_bm = document.createElement('div')
     const control_bl = document.createElement('div')
     const control_ml = document.createElement('div')
+
+    if(_this.resizeClass) {
+        control_tl.classList = _this.resizeClass
+        control_tm.classList = _this.resizeClass
+        control_tr.classList = _this.resizeClass
+        control_mr.classList = _this.resizeClass
+        control_br.classList = _this.resizeClass
+        control_bm.classList = _this.resizeClass
+        control_bl.classList = _this.resizeClass
+        control_ml.classList = _this.resizeClass
+    }
 
     control_tl.style.cssText = style + 'top:0;left:0;cursor:nw-resize;'+addPrefix('transform:translate(-50%,-50%)')
     control_tm.style.cssText = style + 'top:0;left:50%;cursor:n-resize;'+addPrefix('transform:translate(-50%,-50%)')
@@ -191,7 +205,7 @@ export function setResizeMethods(_this) {
         return false
     }
     //先给添加8个控制柄
-    const {control_tl, control_tm, control_tr, control_mr, control_br, control_bm, control_bl,control_ml } = addControl(_this.domEl)
+    const {control_tl, control_tm, control_tr, control_mr, control_br, control_bm, control_bl,control_ml } = addControl(_this.domEl,_this)
     const domEl = _this.domEl
     _this.resizeHandle = [control_tl, control_tm, control_tr, control_mr, control_br, control_bm, control_bl,control_ml]
 

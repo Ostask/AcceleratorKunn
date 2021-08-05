@@ -35,14 +35,15 @@ import { getPoints } from '../utils/common'
         }
     ]
     if(!this.parentEl.querySelector('.ac_line')){
+        console.log(this.axisColor)
         for(let i = 0;i < 3;i++) {
             const el = document.createElement('div')
             el.classList = 'ac_line x_line x_line_'+i
-            el.style.cssText = 'background:blue;width:1px;position:absolute;display:none;z-index:9999;'
+            el.style.cssText = 'background:'+this.axisColor+';width:1px;position:absolute;display:none;z-index:9999;'
             this.parentEl.appendChild(el)
             const el1 = document.createElement('div')
             el1.classList = 'ac_line y_line y_line_'+i
-            el1.style.cssText = 'background:blue;height:1px;position:absolute;display:none;z-index:9999;'
+            el1.style.cssText = 'background:'+this.axisColor+';height:1px;position:absolute;display:none;z-index:9999;'
             this.parentEl.appendChild(el1)
         }
     }
@@ -127,7 +128,16 @@ export function hideAxisLine() {
     }
 }
 
+export function removeAxisLine() {
+    const list = this.parentEl.getElementsByClassName("ac_line")
+    for(let i = 0;i < list.length; i++) {
+        this.parentEl.removeChild(list[i])
+        i--
+    }
+}
+
 export function registerAxis(_this) {
     _this.countAxisLine = countAxisLine
     _this.hideAxisLine = hideAxisLine
+    _this.removeAxisLine = removeAxisLine
 }

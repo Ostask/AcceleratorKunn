@@ -2,14 +2,16 @@ export function registerStaticMethod (Accelerator) {
     Accelerator.ID = 1
     Accelerator.x = 0;
     Accelerator.y = 0;
-    Accelerator.width = '100px'
-    Accelerator.height = '100px'
+    Accelerator.width = '200px'
+    Accelerator.height = '200px'
     Accelerator.autoCount = false
     Accelerator.dragable = true
     Accelerator.dragOutable = true
     Accelerator.resizeable = true
     Accelerator.helpAxis = true
     Accelerator.adsort = true
+    Accelerator.axisColor = '#f557ff'
+    Accelerator.resizeClass = ''
 
     Accelerator._instanceList = []
 

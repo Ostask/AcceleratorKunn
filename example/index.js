@@ -9,11 +9,7 @@ window.onload = () => {
         domEl.classList = "addDom"
         document.body.appendChild(domEl)
         const ac = new Accelerator(domEl,{
-            x:'0%',
-            y:'0%',
-            width:'10%',
-            height:'10%',
-            helpAxis:true
+            
         })
     }
     document.querySelector('#clear').onclick = () => {
