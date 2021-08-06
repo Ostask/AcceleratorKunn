@@ -40,12 +40,19 @@ const component = {
         },
         x:[String,Number],
         y:[String,Number],
+        minWidth :[String,Number],
+        minHeight :[String,Number],
+        maxWidth :[String,Number],
+        maxHeight :[String,Number],
         autoCount:Boolean,
         dragable:Boolean,
         dragOutable:Boolean,
         resizeable:Boolean,
         helpAxis:Boolean,
-        adsort:Boolean
+        adsort:Boolean,
+        axisColor: String,
+        resizeClass:String,
+        dragHandler:String
     },
     data() {
         return {
@@ -86,8 +93,15 @@ const component = {
         if(this.adsort || this.adsort === false) {
             config.adsort = this.adsort
         }
-
-        console.log('config',config)
+        if(this.axisColor) {
+            config.axisColor = this.axisColor
+        }
+        if(this.resizeClass) {
+            config.resizeClass = this.resizeClass
+        }
+        if(this.dragHandler) {
+            config.dragHandler = this.dragHandler
+        }
         this.Ac = new Accelerator(this.$refs.acceleratorRef,config)
 
         this.$emit('created',{target:this.Ac})
@@ -147,6 +161,26 @@ const component = {
                 this.Ac.attr('y',newVal)
             }
         },
+        minWidth(newVal,oldVal){
+            if(newVal !== oldVal) {
+                this.Ac.attr('minWidth',newVal)
+            }
+        },
+        minHeight(newVal,oldVal){
+            if(newVal !== oldVal) {
+                this.Ac.attr('minHeight',newVal)
+            }
+        },
+        maxWidth(newVal,oldVal){
+            if(newVal !== oldVal) {
+                this.Ac.attr('maxWidth',newVal)
+            }
+        },
+        maxHeight(newVal,oldVal){
+            if(newVal !== oldVal) {
+                this.Ac.attr('maxHeight',newVal)
+            }
+        },
         autoCount(newVal,oldVal){
             if(newVal !== oldVal) {
                 this.Ac.attr('autoCount',newVal)
@@ -175,6 +209,21 @@ const component = {
         adsort(newVal,oldVal){
             if(newVal !== oldVal) {
                 this.Ac.attr('adsort',newVal)
+            }
+        },
+        axisColor(newVal,oldVal){
+            if(newVal !== oldVal) {
+                this.Ac.attr('axisColor',newVal)
+            }
+        },
+        resizeClass(newVal,oldVal){
+            if(newVal !== oldVal) {
+                this.Ac.attr('resizeClass',newVal)
+            }
+        },
+        dragHandler(newVal,oldVal){
+            if(newVal !== oldVal) {
+                this.Ac.attr('dragHandler',newVal)
             }
         }
     },

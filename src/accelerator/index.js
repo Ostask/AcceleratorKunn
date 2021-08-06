@@ -6,6 +6,10 @@
       y: y坐标   String | Number
       width : 宽度 String | Number
       height : 高度  String | Number
+      minWidth : 最小宽度 String | Number
+      minHeight : 最小高度 String | Number
+      maxWidth : 最大宽度 String | Number
+      maxHeight : 最大高度 String | Number
       autoCount : 是否自动计算下一个位置的值 Boolean
       dragable : 是否允许拖拽 Boolean
       dragOutable : 是否允许拖拽超出父元素
@@ -14,6 +18,7 @@
       adsort : 吸附
       axisColor:参考线颜色 | String
       resizeClass:控制柄样式 | String
+      dragHandler:拖拽控制柄 String | Dom
  * }
 
    //可用的css class
@@ -113,6 +118,10 @@ class Accelerator extends Event{
             y:y || Accelerator.y,
             width:domElWidth || Accelerator.width,
             height:domElHeight || Accelerator.height,
+            minWidth :Accelerator.minWidth || 0,
+            minHeight : Accelerator.minHeight || 0,
+            maxWidth :Accelerator.maxWidth || null,
+            maxHeight :Accelerator.maxHeight || null,
             autoCount:Accelerator.autoCount,
             dragable:Accelerator.dragable,
             dragOutable:Accelerator.dragOutable,
@@ -120,7 +129,8 @@ class Accelerator extends Event{
             helpAxis:Accelerator.helpAxis,
             adsort:Accelerator.adsort,
             axisColor:Accelerator.axisColor,
-            resizeClass:Accelerator.resizeClass
+            resizeClass:Accelerator.resizeClass,
+            dragHandler:Accelerator.dragHandler
         },...config} //保存原始的config留个底，
 
         this.config.id = Accelerator.ID //这个id不允许用户来改变
@@ -136,6 +146,10 @@ class Accelerator extends Event{
         this.y = null  //y坐标
         this.width = null //宽度
         this.height = null //高度
+        this.minWidth = null
+        this.minHeight = null
+        this.maxWidth = null
+        this.maxHeight = null
         this.autoCount = false //是否自动计算下一个位置的值
         this.dragable = true //是否允许拖拽
         this.dragOutable = true //是否允许拖拽超出父元素
@@ -144,6 +158,7 @@ class Accelerator extends Event{
         this.adsort = true //吸附
         this.axisColor = null
         this.resizeClass = null
+        this.dragHandler = null
         //以上为用户可变动参数
 
         //以下为用户不关心的参数
@@ -238,12 +253,27 @@ class Accelerator extends Event{
         this.yUnit = yRes.originUnit
 
         const widthRes = unify(config.width, this.parentElWidth)
-        this.width = widthRes.num //宽度
+        const minWidthRes = unify(config.minWidth, this.parentElWidth)
+        this.width = Math.max(widthRes.num,minWidthRes.num) //宽度
+        if(config.maxWidth) {
+            const maxWidthRes = unify(config.maxWidth, this.parentElWidth)
+            this.width = Math.min(this.width,maxWidthRes.num) //宽度
+        }
         this.widthUnit = widthRes.originUnit
 
         const heightRes = unify(config.height, this.parentElHeight) 
-        this.height = heightRes.num//高度
+        const minHeightRes = unify(config.minHeight, this.parentElHeight)
+        this.height = Math.max(minHeightRes.num,heightRes.num)//高度
+        if(config.maxWidth) {
+            const maxHeightRes = unify(config.maxHeight, this.parentElHeight)
+            this.height = Math.min(this.height,maxHeightRes.num) //宽度
+        }
         this.heightUnit = heightRes.originUnit
+
+        this.minWidth = config.minWidth
+        this.minHeight = config.minHeight
+        this.maxWidth = config.maxWidth
+        this.maxHeight = config.maxHeight
 
         this.autoCount = config.autoCount //是否自动计算下一个将要添加的元素的位置
         this.dragable = config.dragable
@@ -253,6 +283,7 @@ class Accelerator extends Event{
         this.adsort = config.adsort
         this.axisColor = config.axisColor
         this.resizeClass = config.resizeClass
+        this.dragHandler = config.dragHandler
 
         this.x1 = this.x + this.width // 右下角x坐标点
         this.y1 = this.y + this.height // 右下角y坐标点
@@ -296,6 +327,11 @@ class Accelerator extends Event{
         Accelerator.width = getSizeText(this.width,this.widthUnit,this.parentElWidth)
         Accelerator.height = getSizeText(this.height,this.heightUnit,this.parentElHeight)
 
+        Accelerator.minWidth = this.minWidth
+        Accelerator.minHeight = this.minHeight
+        Accelerator.maxWidth = this.maxWidth
+        Accelerator.maxHeight = this.maxHeight
+
         Accelerator.autoCount = this.autoCount
         Accelerator.dragable = this.dragable
         Accelerator.dragOutable = this.dragOutable
@@ -317,6 +353,7 @@ class Accelerator extends Event{
         const originResizeable = this.resizeable
         const originResizeClass = this.resizeClass
         const originAxisColor = this.axisColor
+        const originDragHandler = this.dragHandler
         if(type === 'string'){
             //字符串的话就验证第二个attrValue的值
             if(attrValue || attrValue === false) {
@@ -357,6 +394,13 @@ class Accelerator extends Event{
                 removeDragMethods(this)
             }
         }
+        if(this.dragHandler != originDragHandler) {
+            if(this.dragHandler){
+                setDragMethods(this)
+            }else{
+                removeDragMethods(this)
+            }
+        }
         if(this.resizeable != originResizeable) {
             if(this.resizeable){
                 setResizeMethods(this)
@@ -389,9 +433,63 @@ class Accelerator extends Event{
         }
     }
     select(e) {
-        prevent(e)
+        if(e) {
+            prevent(e)
+        }
         this.constructor.setActive(this)
         this.emit('select',{target:this})
+    }
+    //将x,y,width,height转换为px单位
+    changeToPx(name = []){
+        if(typeof name === 'string'){
+            name = [name]
+        }
+        if(name.length == 0) {
+            this.xUnit = 'px'
+            this.yUnit = 'px'
+            this.widthUnit = 'px'
+            this.heightUnit = 'px'
+        }else{
+            if('x'.indexOf(name) > -1) {
+                this.xUnit = 'px'
+            }
+            if('y'.indexOf(name) > -1) {
+                this.yUnit = 'px'
+            }
+            if('width'.indexOf(name) > -1) {
+                this.widthUnit = 'px'
+            }
+            if('height'.indexOf(name) > -1) {
+                this.heightUnit = 'px'
+            }
+        }
+        this._updatePositionConfig()
+    }
+    //将x,y,width,height转换为%单位
+    changeToPercent(name = []){
+        if(typeof name === 'string'){
+            name = [name]
+        }
+        if(name.length == 0){
+            this.xUnit = '%'
+            this.yUnit = '%'
+            this.widthUnit = '%'
+            this.heightUnit = '%'
+        }else{
+            if('x'.indexOf(name) > -1) {
+                this.xUnit = '%'
+            }
+            if('y'.indexOf(name) > -1) {
+                this.yUnit = '%'
+            }
+            if('width'.indexOf(name) > -1) {
+                this.widthUnit = '%'
+            }
+            if('height'.indexOf(name) > -1) {
+                this.heightUnit = '%'
+            }
+        }
+        this._updatePositionConfig()
     }
     destroy() {
         this.emit('beforeDestroy',{target:this})

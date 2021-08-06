@@ -119,3 +119,12 @@ export function getPoints(instance) {
     list.push({x:instance.x1,y:instance.y1})
     return list
 }
+
+export function isDom(element) {
+    if( typeof HTMLElement === 'object' ){
+        return element instanceof HTMLElement;
+    }
+    else{
+        return element && typeof element === 'object' && element.nodeType === 1 && typeof element.nodeName === 'string';
+    }
+}

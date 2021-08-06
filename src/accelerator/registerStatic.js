@@ -4,6 +4,8 @@ export function registerStaticMethod (Accelerator) {
     Accelerator.y = 0;
     Accelerator.width = '200px'
     Accelerator.height = '200px'
+    Accelerator.minWidth = '0px'
+    Accelerator.minHeight = '0px'
     Accelerator.autoCount = false
     Accelerator.dragable = true
     Accelerator.dragOutable = true
@@ -24,10 +26,25 @@ export function registerStaticMethod (Accelerator) {
         Accelerator.y = config.y || Accelerator.y
         Accelerator.width = config.width || Accelerator.width
         Accelerator.height = config.height || Accelerator.height
+        Accelerator.minWidth = config.minWidth || Accelerator.minWidth
+        Accelerator.minHeight = config.minHeight || Accelerator.minHeight
+        if(config.maxWidth) {
+            Accelerator.maxWidth = config.maxWidth
+        }
+        if(config.maxHeight) {
+            Accelerator.maxHeight = config.maxHeight 
+        }
+        if(config.dragHander) {
+            Accelerator.dragHander = config.dragHander
+        }
         Accelerator.autoCount = config.autoCount || Accelerator.autoCount
         Accelerator.dragable = config.dragable || Accelerator.dragable
         Accelerator.dragOutable = config.dragOutable || Accelerator.dragOutable
         Accelerator.resizeable = config.resizeable || Accelerator.resizeable
+        Accelerator.helpAxis = config.helpAxis || Accelerator.helpAxis
+        Accelerator.adsort = config.adsort || Accelerator.adsort
+        Accelerator.axisColor = config.axisColor || Accelerator.axisColor
+        Accelerator.resizeClass = config.resizeClass || Accelerator.resizeClass
     }
 
     Accelerator.setActive = function (ac) {

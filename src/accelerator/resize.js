@@ -1,6 +1,7 @@
 import {
     addPrefix,
     prevent,
+    unify
 } from '../utils/common'
 
 export function addControl(domEl,_this) {
@@ -79,6 +80,19 @@ export function onUnActive(e) {
     this.hideControl()
 }
 
+export function countMaxMin(now,min,max,refer) {
+    let res
+    if(min) {
+        res = Math.max(unify(min, refer).num,now)
+    }else{
+        res = Math.max(0,now)
+    }
+    if(max) {
+        res = Math.min(unify(max, refer).num,now)
+    }
+    return res
+}
+
 export function moveUp(moveY,_this) {
     //加减y和height
     let newY = _this.y + moveY
@@ -92,7 +106,7 @@ export function moveUp(moveY,_this) {
         newY = Math.min(maxY,Math.max(minY,newY))
         newHeight = Math.min(maxHeight,Math.max(minHeight,newHeight))
     }
-    newHeight = Math.max(0,newHeight)
+    newHeight = countMaxMin(newHeight,_this.minHeight,_this.maxHeight,_this.parentElHeight)
     _this.y = newY
     _this.height = newHeight
     _this.y1 = newY + newHeight
@@ -107,7 +121,7 @@ export function moveDown(moveY, _this) {
         const maxHeight = _this.parentElHeight - _this.y
         newHeight = Math.min(maxHeight,Math.max(minHeight,newHeight))
     }
-    newHeight = Math.max(0,newHeight)
+    newHeight = countMaxMin(newHeight,_this.minHeight,_this.maxHeight,_this.parentElHeight)
     _this.height = newHeight
     _this.y1 = _this.y + newHeight
     _this.yCenter = _this.y + (newHeight / 2)
@@ -126,7 +140,7 @@ export function moveLeft(moveX, _this){
         newX = Math.min(maxX,Math.max(minX,newX))
         newWidth = Math.min(maxWidth,Math.max(minWidth,newWidth))
     }
-    newWidth = Math.max(0,newWidth)
+    newWidth = countMaxMin(newWidth,_this.minWidth,_this.maxWidth,_this.parentElWidth)
     _this.x = newX
     _this.width = newWidth
     _this.x1 = newX + newWidth
@@ -141,7 +155,7 @@ export function moveRight(moveX, _this){
         const maxWidth = _this.parentElWidth - _this.x
         newWidth = Math.min(maxWidth,Math.max(minWidth,newWidth))
     }
-    newWidth = Math.max(0,newWidth)
+    newWidth = countMaxMin(newWidth,_this.minWidth,_this.maxWidth,_this.parentElWidth)
     _this.width = newWidth
     _this.x1 = _this.x + newWidth
     _this.xCenter = _this.x + (newWidth / 2)
