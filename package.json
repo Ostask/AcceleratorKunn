@@ -1,6 +1,6 @@
 {
     "name": "acceleratorkunn",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "一方通行，一个可以赋予普通元素任意定位，可拖拽，可伸缩大小的插件",
     "main": "dist/acceleratorkunn.js",
     "scripts": {

@@ -7,6 +7,7 @@
 4. 参考线
 5. 吸附
 ![](https://cdn.JsDelivr.net/gh/Ostask/img-bed//2021020806.gif)
+![](https://cdn.JsDelivr.net/gh/Ostask/img-bed//20210208061.gif)
 
 ## 安装
 - npm install acceleratorkunn
