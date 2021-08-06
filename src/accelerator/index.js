@@ -74,8 +74,7 @@ import {
     getElWidth,
     getElHeight,
     getElX,
-    getElY,
-    prevent
+    getElY
 } from '../utils/common'
 import { registerStaticMethod } from './registerStatic'
 import {
@@ -434,7 +433,7 @@ class Accelerator extends Event{
     }
     select(e) {
         if(e) {
-            prevent(e)
+            e.stopPropagation()
         }
         this.constructor.setActive(this)
         this.emit('select',{target:this})

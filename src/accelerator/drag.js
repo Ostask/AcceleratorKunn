@@ -1,5 +1,4 @@
 import {
-    prevent,
     isDom
 } from '../utils/common'
 
@@ -31,7 +30,7 @@ export function countMove(newX,newY,_this) {
 }
 
 export function onMousedown(e) {
-    prevent(e)
+    e.stopPropagation();
     this.dragOrign.x = e.pageX
     this.dragOrign.y = e.pageY
     this.isdragging = true
