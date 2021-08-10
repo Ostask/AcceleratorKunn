@@ -3,6 +3,9 @@ import Accelerator from "../accelerator"
 const directive ={
     // 当被绑定的元素插入到 DOM 中时……
     inserted: function (el,binding,vnode) {
+       if(!bingding.value.autoCount && binding.value.autoCount !== false) {
+           binding.value.autoCount = true
+       } 
        el.ackun = new Accelerator(el,binding.value)
        el.ackun.on('dragMove',(e) => {
         vnode.context[binding.expression] = e.target.config; 

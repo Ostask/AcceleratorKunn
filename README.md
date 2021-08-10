@@ -2,12 +2,13 @@
 
 ## 功能
 1. 定位
-2. 拖拽(可用键盘上下左右键控制)
+2. 拖拽(可用键盘上下左右键控制)(可通过选框多选拖拽)
 3. 缩放
 4. 参考线
 5. 吸附
 ![](https://cdn.JsDelivr.net/gh/Ostask/img-bed//2021020806.gif)
 ![](https://cdn.JsDelivr.net/gh/Ostask/img-bed//20210208061.gif)
+![](https://cdn.JsDelivr.net/gh/Ostask/img-bed//2021020810.gif)
 
 ## 安装
 - npm install acceleratorkunn
@@ -160,7 +161,7 @@ console.log(Ac.config.y) //20%
 有时候父元素大小改变了，但是domEl的大小没有改变时，可以手动调用这个方法。
 
 ### select()
-手动激活这个元素，但是同一时间内，有且只能有一个元素处于激活状态
+手动激活这个元素，但是同一时间内，有且只能有一个元素处于激活状态，想要多选目前要用选框（如果觉得不好用就留言我后面改）
 
 ### changeToPx(attrName) 
 - attrName (String | Array) 可传入'x','y','width','height'或者它们组合的数组
@@ -293,6 +294,8 @@ domEl的中心点y值
 正在拖动中
 ### ac_active
 当前对象激活
+### ac_select_box
+多选的选框样式，可以使用这个class加上!important来覆盖默认的样式
 
 ## 事件
 ### destroyed

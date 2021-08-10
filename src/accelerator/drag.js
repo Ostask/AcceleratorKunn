@@ -56,13 +56,26 @@ export function onKeydown(e) {
                 newX += 1
                 break;        
         }
-        countMove(newX,newY,this)
-        this._setStyle()
-        this._updatePositionConfig()
-        if(this.helpAxis) {
-            this.countAxisLine()
+        if(this.constructor._selectedNum <= 1){
+            countMove(newX,newY,this)
+            this._setStyle()
+            this._updatePositionConfig()
+            if(this.helpAxis) {
+                this.countAxisLine()
+            }
+            this.emit('dragMove',{target:this,event:e})
+        }else{
+            this.x = newX
+            this.y = newY
+            this.x1 = newX + this.width
+            this.y1 = newY + this.height
+            this.xCenter = newX + (this.width / 2)
+            this.yCenter = newY + (this.height / 2)
+
+            this._setStyle()
+            this._updatePositionConfig()
+            this.emit('dragMove',{target:this,event:e})
         }
-        this.emit('dragMove',{target:this,event:e})
     }
 }
 
@@ -71,23 +84,29 @@ export function onMousemove(e) {
         this.domEl.classList.add("ac_dragging")
         const moveX = e.pageX - this.dragOrign.x
         const moveY = e.pageY - this.dragOrign.y
-        let newX = this.x + moveX
-        let newY = this.y + moveY
-        countMove(newX,newY,this)
-        let flag =false
-        if(this.adsort) {
-            flag = this.countAdsorb(e,moveX,moveY)
-        }
-        if(!flag) {
+        if(this.constructor._selectedNum <= 1){
+            let newX = this.x + moveX
+            let newY = this.y + moveY
+            countMove(newX,newY,this)
+            let flag =false
+            if(this.adsort) {
+                flag = this.countAdsorb(e,moveX,moveY)
+            }
+            if(!flag) {
+                this.dragOrign.x = e.pageX
+                this.dragOrign.y = e.pageY
+            }
+            this._setStyle()
+            this._updatePositionConfig()
+            if(this.helpAxis) {
+                this.countAxisLine()
+            }
+            this.emit('dragMove',{target:this,event:e})
+        }else{
+            this.constructor.dragActive(moveX,moveY,e)
             this.dragOrign.x = e.pageX
             this.dragOrign.y = e.pageY
         }
-        this._setStyle()
-        this._updatePositionConfig()
-        if(this.helpAxis) {
-            this.countAxisLine()
-        }
-        this.emit('dragMove',{target:this,event:e})
     }
 }
 
@@ -156,7 +175,7 @@ export function setDragMethods(_this) {
 export function removeDragMethods(_this) {
     _this.dragButton.removeEventListener("mousedown",_this.bindMousedown)
     window.removeEventListener("mousemove",_this.bindMouseMove)
-    window.removeEventListener("onMouseleave",_this.bindMouseLeave)
+    window.removeEventListener("mouseleave",_this.bindMouseLeave)
     window.removeEventListener("mouseup",_this.bindMouseUp)
     window.removeEventListener("keydown",_this.bindKeydown)
     window.removeEventListener("keyup",_this.bindKeyup)

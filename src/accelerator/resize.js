@@ -52,14 +52,12 @@ export function addControl(domEl,_this) {
 }
 
 export function showControl() {
-    this.domEl.classList.add("ac_active")
     for(let i = 0;i<this.resizeHandle.length; i++) {
         this.resizeHandle[i].style.display = 'block'
     }
 }
 
 export function hideControl() {
-    this.domEl.classList.remove("ac_active")
     for(let i = 0;i<this.resizeHandle.length; i++) {
         this.resizeHandle[i].style.display = 'none'
     }
@@ -78,6 +76,8 @@ export function resizedown(e, mode, _this) {
 export function onUnActive(e) {
     prevent(e)
     this.hideControl()
+    this.setUnActive()
+    this.constructor._selectedNum = 0
 }
 
 export function countMaxMin(now,min,max,refer) {

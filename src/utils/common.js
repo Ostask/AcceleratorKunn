@@ -128,3 +128,29 @@ export function isDom(element) {
         return element && typeof element === 'object' && element.nodeType === 1 && typeof element.nodeName === 'string';
     }
 }
+
+export function isIntersect(dom1,dom2) {
+    const box1 = dom1.getBoundingClientRect()
+    const x1 = box1.left
+    const y1 = box1.top
+    const width1 = box1.width
+    const height1 = box1.height
+
+    const box2 = dom2.getBoundingClientRect()
+    const x2 = box2.left
+    const y2 = box2.top
+    const width2 = box2.width
+    const height2 = box2.height
+
+    //x方向有没有相交
+    if((x1 > (x2 + width2)) || ((x1 + width1 ) < x2)) {
+        return false
+    }
+
+    //y方向有没有相交
+    if((y1 > (y2 + height2)) || ((y1 + height1 ) < y2)) {
+        return false
+    }
+
+    return true
+}

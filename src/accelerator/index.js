@@ -200,7 +200,11 @@ class Accelerator extends Event{
         console.log(this)
 
         //domEl的父元素必须是relateive定位
-        this.parentEl.style.position = 'relative'
+        const cssStyle = getComputedStyle(this.parentEl)
+        let isAbsolute = cssStyle.position === 'absolute'
+        if(!isAbsolute) {
+            this.parentEl.style.position = 'relative'
+        }
 
         //domEl的父元素必须不能有滚动条
         this.parentEl.style.overflow = 'visible'
@@ -213,6 +217,9 @@ class Accelerator extends Event{
             this._updateStaticConfig()
         }
 
+        if(Accelerator._instanceList.length == 0){
+            Accelerator.addEvent()
+        }
         //全局记录的id自增
         Accelerator.ID++
         //讲该实例记录
@@ -435,8 +442,18 @@ class Accelerator extends Event{
         if(e) {
             e.stopPropagation()
         }
-        this.constructor.setActive(this)
+        if(this.constructor._selectedNum <= 1){
+            this.constructor.setActive(this)
+        }
+    }
+    setActive() {
+        this.domEl.classList.add("ac_active")
+        this.active = true
         this.emit('select',{target:this})
+    }
+    setUnActive() {
+        this.domEl.classList.remove("ac_active")
+        this.active = false
     }
     //将x,y,width,height转换为px单位
     changeToPx(name = []){
@@ -499,6 +516,9 @@ class Accelerator extends Event{
         this.watchParentInterval = null
         const index = Accelerator._instanceList.findIndex((instance) => { return this.id === instance.id })
         Accelerator._instanceList.splice(index,1)
+        if(Accelerator._instanceList.length == 0){
+            Accelerator.removeEvent()
+        }
         this.emit('destroyed',{target:this})
     }
 }
