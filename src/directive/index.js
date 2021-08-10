@@ -2,11 +2,15 @@ import Accelerator from "../accelerator"
 
 const directive ={
     // 当被绑定的元素插入到 DOM 中时……
-    inserted: function (el,binding,vnode) {
-       if(!binding.value.autoCount && binding.value.autoCount !== false) {
-           binding.value.autoCount = true
-       } 
-       el.ackun = new Accelerator(el,binding.value)
+    inserted: function (el,binding,vnode) { 
+        let config = {}
+        if(!binding.value || !binding.value.autoCount && binding.value.autoCount !== false) {
+            config.autoCount = true
+        } 
+        if(binding.value) {
+            confog = binding.value
+        }
+        el.ackun = new Accelerator(el,config)
        el.ackun.on('dragMove',(e) => {
         vnode.context[binding.expression] = e.target.config; 
        })
