@@ -130,9 +130,8 @@ export function hideAxisLine() {
 
 export function removeAxisLine() {
     const list = this.parentEl.getElementsByClassName("ac_line")
-    for(let i = 0;i < list.length; i++) {
-        this.parentEl.removeChild(list[i])
-        i--
+    while(list.length > 0) {
+        this.parentEl.removeChild(list[0])
     }
 }
 
