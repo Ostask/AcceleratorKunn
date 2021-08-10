@@ -29,7 +29,7 @@ export function registerStaticMethod (Accelerator) {
         pointer-events: none;
         z-index:9999;
     }`
-    document.body.appendChild(style)
+    document.head.appendChild(style)
     Accelerator._origin = {
         x:0,
         y:0
