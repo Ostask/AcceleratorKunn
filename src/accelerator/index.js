@@ -188,6 +188,10 @@ class Accelerator extends Event{
         this.active = false
         this.resizeHandle = []
 
+        this.adsortListX = []
+        this.adsortListY = []
+        this.adsortPoint = {x:null,y:null}
+
         this.watchParentInterval = null
         this._init()
     }

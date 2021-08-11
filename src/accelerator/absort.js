@@ -28,30 +28,52 @@ export function countAdsorb(e,moveX,moveY) {
         for(let j = 0;j < compareList.length; j++) {
             const cx = compareList[j].x
             if(Math.abs(x - cx) <= DISTANCE) {
-                const dis = x - cx
-                flag = true
-                res += 'x'
-                this.x = this.x - dis
-                this.xCenter = this.x + (this.width / 2)
-                this.x1 = this.x + this.width
-                break;
+                if(!flag){
+                    const xList = this.adsortListX.map(item => item.x)
+                    //避免反复横跳，把其它挨得近的点剔除
+                    if(!xList.includes(cx)) {
+                        const dis = x - cx
+                        flag = true
+                        res += 'x'
+                        this.x = this.x - dis
+                        this.xCenter = this.x + (this.width / 2)
+                        this.x1 = this.x + this.width
+                        this.adsortPoint = compareList[j]
+                        this.adsortListX = []
+                    }
+                }else{
+                    //把除了和吸附点相同x坐标的，其他靠得近的点都记录下来
+                    if(cx != this.adsortPoint.x){
+                        this.adsortListX.push(compareList[j])
+                    }
+                }
             }
         }
         for(let j = 0;j < compareList.length; j++) {
             const cy = compareList[j].y
             if(Math.abs(y - cy) <= DISTANCE) {
-                const dis = y - cy
-                flag = true
-                res += 'y'
-                this.y = this.y - dis
-                this.yCenter = this.y + (this.height / 2)
-                this.y1 = this.y + this.height
-                break;
+                if(!flag){
+                    const yList = this.adsortListY.map(item => item.y)
+                    if(!yList.includes(cy)) {
+                        const dis = y - cy
+                        flag = true
+                        res += 'y'
+                        this.y = this.y - dis
+                        this.yCenter = this.y + (this.height / 2)
+                        this.y1 = this.y + this.height
+                        this.adsortPoint = compareList[j]
+                        this.adsortListY = []
+                    }
+                }else{
+                    if(cy != this.adsortPoint.y){
+                        this.adsortListY.push(compareList[j])
+                    }
+                }
             }
         }
-        if(flag){
-            break;
-        }
+        // if(flag){
+        //     break;
+        // }
     }
     //根据变动的是x还是y，修正this.dragOrigin
     if(res == 'x') { 
