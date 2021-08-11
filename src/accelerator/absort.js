@@ -19,7 +19,8 @@ export function countAdsorb(e,moveX,moveY) {
     if(compareList.length == 0) {
         return false
     }
-    let flag = false
+    let flagX = false
+    let flagY = false
     let res = ''
     //计算它们x和y坐标的差值，如果绝对值小于5就吸附上去，吸附了其中一个就退出循环
     for(let i = 0;i < currentList.length; i++) {
@@ -28,12 +29,12 @@ export function countAdsorb(e,moveX,moveY) {
         for(let j = 0;j < compareList.length; j++) {
             const cx = compareList[j].x
             if(Math.abs(x - cx) <= DISTANCE) {
-                if(!flag){
+                if(!flagX){
                     const xList = this.adsortListX.map(item => item.x)
                     //避免反复横跳，把其它挨得近的点剔除
                     if(!xList.includes(cx)) {
                         const dis = x - cx
-                        flag = true
+                        flagX = true
                         res += 'x'
                         this.x = this.x - dis
                         this.xCenter = this.x + (this.width / 2)
@@ -52,11 +53,11 @@ export function countAdsorb(e,moveX,moveY) {
         for(let j = 0;j < compareList.length; j++) {
             const cy = compareList[j].y
             if(Math.abs(y - cy) <= DISTANCE) {
-                if(!flag){
+                if(!flagY){
                     const yList = this.adsortListY.map(item => item.y)
                     if(!yList.includes(cy)) {
                         const dis = y - cy
-                        flag = true
+                        flagY = true
                         res += 'y'
                         this.y = this.y - dis
                         this.yCenter = this.y + (this.height / 2)
@@ -96,7 +97,7 @@ export function countAdsorb(e,moveX,moveY) {
             this.dragOrign.y = e.pageY
         }
     }
-    if(flag) {
+    if(flagX || flagY) {
         return true
     }else{
         return false
