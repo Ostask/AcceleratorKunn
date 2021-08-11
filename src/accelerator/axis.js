@@ -36,34 +36,34 @@ import { getPoints } from '../utils/common'
     ]
     if(!this.parentEl.querySelector('.ac_line')){
         console.log(this.axisColor)
-        for(let i = 0;i < 3;i++) {
-            const el = document.createElement('div')
-            el.classList = 'ac_line x_line x_line_'+i
-            el.style.cssText = 'background:'+this.axisColor+';width:1px;position:absolute;display:none;z-index:9999;'
-            this.parentEl.appendChild(el)
-            const el1 = document.createElement('div')
-            el1.classList = 'ac_line y_line y_line_'+i
-            el1.style.cssText = 'background:'+this.axisColor+';height:1px;position:absolute;display:none;z-index:9999;'
-            this.parentEl.appendChild(el1)
+        for(let i = 0; i < 3; i++) {
+            const xEl = document.createElement('div')
+            xEl.classList = 'ac_line x_line x_line_' + i
+            xEl.style.cssText = 'background:' + this.axisColor + ';width:1px;position:absolute;display:none;z-index:9999;'
+            this.parentEl.appendChild(xEl)
+            const yEl = document.createElement('div')
+            yEl.classList = 'ac_line y_line y_line_' + i
+            yEl.style.cssText = 'background:' + this.axisColor + ';height:1px;position:absolute;display:none;z-index:9999;'
+            this.parentEl.appendChild(yEl)
         }
     }
     if(this.constructor._instanceList.length < 2) {
         return false
     }
-    for(let i = 0;i< this.constructor._instanceList.length; i++) {
+    for(let i = 0; i < this.constructor._instanceList.length; i++) {
         const instance = this.constructor._instanceList[i]
         if(instance.parentEl === this.parentEl && instance.id !== this.id) {
             pointList.push(...getPoints(instance))
         }
     }
-    if(pointList.length > 0) {
-        pointList.push(...getPoints(this))
-    }else{
+    if(pointList.length === 0) {
         return false
     }
+    pointList.push(...getPoints(this))
+
     for(let i = 0; i < xLine.length; i++) {
         const value = xLine[i].value
-        for(let j = 0;j<pointList.length; j++) {
+        for(let j = 0; j < pointList.length; j++) {
             if(value === pointList[j].x) {
                 xLine[i].list.push(pointList[j])
             }
@@ -71,7 +71,7 @@ import { getPoints } from '../utils/common'
     }
     for(let i = 0; i < yLine.length; i++) {
         const value = yLine[i].value
-        for(let j = 0;j<pointList.length; j++) {
+        for(let j = 0; j < pointList.length; j++) {
             if(value === pointList[j].y) {
                 yLine[i].list.push(pointList[j])
             }
@@ -79,40 +79,39 @@ import { getPoints } from '../utils/common'
     }
     
     //list中的数据必须大于4条才算有效
-    for(let i = 0;i < xLine.length; i++) {
-        if(xLine[i].list.length >= 4) {
-            const xPos = xLine[i].value
-            const yList = xLine[i].list.map(item => item.y)
-            const yPos1 = Math.min(...yList)
-            const yPos2 = Math.max(...yList)
-            const line = this.parentEl.querySelector('.x_line_'+i)
-            line.style.left = xPos + 'px'
-            line.style.top = yPos1 + 'px'
-            line.style.height = (yPos2 - yPos1) + 'px'
-            line.style.display = 'block'
-        }else{
-            const line = this.parentEl.querySelector('.x_line_'+i)
+    for(let i = 0; i < xLine.length; i++) {
+        const line = this.parentEl.querySelector('.x_line_'+i)
+        if(xLine[i].list.length < 4) {
             line.style.display = 'none'
+            continue
         }
+        const xPos = xLine[i].value
+        const yList = xLine[i].list.map(item => item.y)
+        const yPos1 = Math.min(...yList)
+        const yPos2 = Math.max(...yList)
+        line.style.left = xPos + 'px'
+        line.style.top = yPos1 + 'px'
+        line.style.height = (yPos2 - yPos1) + 'px'
+        line.style.display = 'block'
     }
 
-    for(let i = 0;i < yLine.length; i++) {
-        if(yLine[i].list.length >= 4) {
-            const yPos = yLine[i].value
-            const xList = yLine[i].list.map(item => item.x)
-            const xPos1 = Math.min(...xList)
-            const xPos2 = Math.max(...xList)
-            const line = this.parentEl.querySelector('.y_line_'+i)
-            if(line) {
-                line.style.top = yPos + 'px'
-                line.style.left = xPos1 + 'px'
-                line.style.width = (xPos2 - xPos1) + 'px'
-                line.style.display = 'block'
-            }
-        }else{
-            const line = this.parentEl.querySelector('.y_line_'+i)
-            if(line)line.style.display = 'none'
+    for(let i = 0; i < yLine.length; i++) {
+        const line = this.parentEl.querySelector('.y_line_'+i)
+        if(!line){
+            continue
         }
+        if(yLine[i].list.length < 4) {
+            line.style.display = 'none'
+            continue
+        }
+        const yPos = yLine[i].value
+        const xList = yLine[i].list.map(item => item.x)
+        const xPos1 = Math.min(...xList)
+        const xPos2 = Math.max(...xList)
+        line.style.top = yPos + 'px'
+        line.style.left = xPos1 + 'px'
+        line.style.width = (xPos2 - xPos1) + 'px'
+        line.style.display = 'block'
     }
 }
 
