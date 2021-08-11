@@ -117,21 +117,16 @@ import { getPoints } from '../utils/common'
 }
 
 export function hideAxisLine() {
-    for(let i = 0;i < 3; i++) {
-        const line = this.parentEl.querySelector('.x_line_'+i)
-        if(line)line.style.display = 'none'
-    }
-
-    for(let i = 0;i < 3; i++) {
-        const line = this.parentEl.querySelector('.y_line_'+i)
-        if(line)line.style.display = 'none'
+    const lines = this.parentEl.querySelectorAll(".ac_line")
+    for(let i = 0; i < lines.length; i++) {
+        lines[i].style.display = 'none'
     }
 }
 
 export function removeAxisLine() {
-    const list = this.parentEl.getElementsByClassName("ac_line")
-    while(list.length > 0) {
-        this.parentEl.removeChild(list[0])
+    const lines = this.parentEl.getElementsByClassName("ac_line")
+    while(lines.length > 0) {
+        this.parentEl.removeChild(lines[0])
     }
 }
 
