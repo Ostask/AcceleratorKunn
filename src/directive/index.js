@@ -59,7 +59,8 @@ const component = {
         adsort:Boolean,
         axisColor: String,
         resizeClass:String,
-        dragHandler:String
+        dragHandler:String,
+        ratio:Number
     },
     data() {
         return {
@@ -108,6 +109,9 @@ const component = {
         }
         if(this.dragHandler) {
             config.dragHandler = this.dragHandler
+        }
+        if(this.ratio) {
+            config.ratio = this.ratio
         }
         this.Ac = new Accelerator(this.$refs.acceleratorRef,config)
 
@@ -231,6 +235,11 @@ const component = {
         dragHandler(newVal,oldVal){
             if(newVal !== oldVal) {
                 this.Ac.attr('dragHandler',newVal)
+            }
+        },
+        ratio(newVal,oldVal){
+            if(newVal !== oldVal) {
+                this.Ac.attr('ratio',newVal)
             }
         }
     },
