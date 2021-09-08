@@ -82,8 +82,8 @@ export function onKeydown(e) {
 export function onMousemove(e) {
     if(this.isdragging){
         this.domEl.classList.add("ac_dragging")
-        const moveX = e.pageX - this.dragOrign.x
-        const moveY = e.pageY - this.dragOrign.y
+        const moveX = (e.pageX - this.dragOrign.x) / this.ratio
+        const moveY = (e.pageY - this.dragOrign.y) / this.ratio
         if(this.constructor._selectedNum <= 1){
             let newX = this.x + moveX
             let newY = this.y + moveY

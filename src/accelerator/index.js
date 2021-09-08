@@ -19,6 +19,7 @@
       axisColor:参考线颜色 | String
       resizeClass:控制柄样式 | String
       dragHandler:拖拽控制柄 String | Dom
+      ratio:缩放比例，页面父元素有样式 transform:scale(xxx)的时候用的，让元素的移动和缩放适应这个比例
  * }
 
    //可用的css class
@@ -129,7 +130,8 @@ class Accelerator extends Event{
             adsort:Accelerator.adsort,
             axisColor:Accelerator.axisColor,
             resizeClass:Accelerator.resizeClass,
-            dragHandler:Accelerator.dragHandler
+            dragHandler:Accelerator.dragHandler,
+            ratio:Accelerator.ratio
         },...config} //保存原始的config留个底，
 
         this.config.id = Accelerator.ID //这个id不允许用户来改变
@@ -158,6 +160,7 @@ class Accelerator extends Event{
         this.axisColor = null
         this.resizeClass = null
         this.dragHandler = null
+        this.ratio = null
         //以上为用户可变动参数
 
         //以下为用户不关心的参数
@@ -294,6 +297,7 @@ class Accelerator extends Event{
         this.axisColor = config.axisColor
         this.resizeClass = config.resizeClass
         this.dragHandler = config.dragHandler
+        this.ratio = config.ratio
 
         this.x1 = this.x + this.width // 右下角x坐标点
         this.y1 = this.y + this.height // 右下角y坐标点
@@ -348,6 +352,7 @@ class Accelerator extends Event{
         Accelerator.resizeable = this.resizeable
         Accelerator.helpAxis = this.helpAxis
         Accelerator.adsort = this.adsort
+        Accelerator.ratio = this.ratio
     }
 
 

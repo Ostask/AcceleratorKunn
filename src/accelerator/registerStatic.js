@@ -16,6 +16,7 @@ export function registerStaticMethod (Accelerator) {
     Accelerator.adsort = true
     Accelerator.axisColor = '#f557ff'
     Accelerator.resizeClass = ''
+    Accelerator.ratio = 1
 
     Accelerator._instanceList = []
 
@@ -65,6 +66,7 @@ export function registerStaticMethod (Accelerator) {
         Accelerator.adsort = config.adsort || Accelerator.adsort
         Accelerator.axisColor = config.axisColor || Accelerator.axisColor
         Accelerator.resizeClass = config.resizeClass || Accelerator.resizeClass
+        Accelerator.ratio = config.ratio || Accelerator.ratio
     }
 
     Accelerator.setActive = function (ac) {

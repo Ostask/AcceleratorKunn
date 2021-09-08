@@ -13,7 +13,8 @@ window.onload = () => {
         father.appendChild(domEl)
         const ac = new Accelerator(domEl,{
            width:'200px',
-           height:'200px'
+           height:'200px',
+           ratio:0.5
         })
        
     })

@@ -164,8 +164,8 @@ export function moveRight(moveX, _this){
 export function resizeMove(e) {
     if(this.resizeMode){
         this.domEl.classList.add("ac_resizing")
-        const moveX = e.pageX - this.resizeOrign.x
-        const moveY = e.pageY - this.resizeOrign.y
+        const moveX = (e.pageX - this.resizeOrign.x) / this.ratio
+        const moveY = (e.pageY - this.resizeOrign.y) / this.ratio
         //根据resizeMode，计算x,y,width,height的新值
         //根据resizeMode，判断x,y,width,height的最大最小值
         switch(this.resizeMode) {
