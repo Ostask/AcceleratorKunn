@@ -74,7 +74,7 @@ export function resizedown(e, mode, _this) {
 }
 
 export function onUnActive(e) {
-    prevent(e)
+    e.stopPropagation();
     this.hideControl()
     this.setUnActive()
     this.constructor._selectedNum = 0

@@ -17,6 +17,7 @@ export function registerStaticMethod (Accelerator) {
     Accelerator.axisColor = '#f557ff'
     Accelerator.resizeClass = ''
     Accelerator.ratio = 1
+    Accelerator.zIndex = 1
 
     Accelerator._instanceList = []
 
@@ -67,6 +68,7 @@ export function registerStaticMethod (Accelerator) {
         Accelerator.axisColor = config.axisColor || Accelerator.axisColor
         Accelerator.resizeClass = config.resizeClass || Accelerator.resizeClass
         Accelerator.ratio = config.ratio || Accelerator.ratio
+        Accelerator.zIndex = config.zIndex || Accelerator.zIndex
     }
 
     Accelerator.setActive = function (ac) {
@@ -138,7 +140,6 @@ export function registerStaticMethod (Accelerator) {
 
 export function mousedownHandler(e) {
     e.stopPropagation();
-    e.preventDefault();
     //将选框加入body中
     document.body.appendChild(Accelerator._selectBox)
     Accelerator._origin = {
@@ -154,15 +155,17 @@ export function mousedownHandler(e) {
 
 export function mousemoveHandler(e) {
     //先设置选框的大小位置
-    e.preventDefault()
+    //e.preventDefault()
     if(Accelerator._hasSelectBox) {
         let moveX = e.pageX - Accelerator._origin.x
         let moveY = e.pageY - Accelerator._origin.y
         if(moveX < 0){
-            moveX = 0
+            moveX = -moveX
+            Accelerator._selectBox.style.left = e.pageX + 'px'
         }
         if(moveY < 0){
-            moveY = 0
+            moveY = -moveY
+            Accelerator._selectBox.style.top = e.pageY + 'px'
         }
         Accelerator._selectBox.style.width = moveX + 'px'
         Accelerator._selectBox.style.height = moveY + 'px'

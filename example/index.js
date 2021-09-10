@@ -14,7 +14,11 @@ window.onload = () => {
         const ac = new Accelerator(domEl,{
            width:'200px',
            height:'200px',
-           ratio:0.5
+           ratio:1
+        })
+
+        ac.on('select',function(e) {
+            ac.setzIndexToTop()
         })
        
     })

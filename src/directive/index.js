@@ -60,7 +60,8 @@ const component = {
         axisColor: String,
         resizeClass:String,
         dragHandler:String,
-        ratio:Number
+        ratio:Number,
+        zIndex:Number
     },
     data() {
         return {
@@ -112,6 +113,9 @@ const component = {
         }
         if(this.ratio) {
             config.ratio = this.ratio
+        }
+        if(this.zIndex) {
+            config.zIndex = this.zIndex
         }
         this.Ac = new Accelerator(this.$refs.acceleratorRef,config)
 
@@ -241,6 +245,11 @@ const component = {
             if(newVal !== oldVal) {
                 this.Ac.attr('ratio',newVal)
             }
+        },
+        zIndex(newVal,oldVal) {
+            if(newVal !== oldVal) {
+                this.Ac.attr('zIndex',newVal)
+            } 
         }
     },
     beforDestroy(){

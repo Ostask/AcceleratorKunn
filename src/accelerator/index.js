@@ -20,6 +20,7 @@
       resizeClass:控制柄样式 | String
       dragHandler:拖拽控制柄 String | Dom
       ratio:缩放比例，页面父元素有样式 transform:scale(xxx)的时候用的，让元素的移动和缩放适应这个比例
+      zIndex: zIndex的层级
  * }
 
    //可用的css class
@@ -131,7 +132,8 @@ class Accelerator extends Event{
             axisColor:Accelerator.axisColor,
             resizeClass:Accelerator.resizeClass,
             dragHandler:Accelerator.dragHandler,
-            ratio:Accelerator.ratio
+            ratio:Accelerator.ratio,
+            zIndex:Accelerator.zIndex
         },...config} //保存原始的config留个底，
 
         this.config.id = Accelerator.ID //这个id不允许用户来改变
@@ -161,6 +163,7 @@ class Accelerator extends Event{
         this.resizeClass = null
         this.dragHandler = null
         this.ratio = null
+        this.zIndex = null
         //以上为用户可变动参数
 
         //以下为用户不关心的参数
@@ -229,6 +232,7 @@ class Accelerator extends Event{
         }
         //全局记录的id自增
         Accelerator.ID++
+        Accelerator.zIndex++
         //讲该实例记录
         Accelerator._instanceList.push(this)
 
@@ -298,6 +302,7 @@ class Accelerator extends Event{
         this.resizeClass = config.resizeClass
         this.dragHandler = config.dragHandler
         this.ratio = config.ratio
+        this.zIndex = config.zIndex
 
         this.x1 = this.x + this.width // 右下角x坐标点
         this.y1 = this.y + this.height // 右下角y坐标点
@@ -313,6 +318,7 @@ class Accelerator extends Event{
         this.domEl.style.top = this.y + 'px'
         this.domEl.style.width = this.width + 'px'
         this.domEl.style.height = this.height + 'px'
+        this.domEl.style.zIndex = this.zIndex
     }
     /**
      * 更新config的width和height,x,y参数
@@ -515,6 +521,12 @@ class Accelerator extends Event{
             }
         }
         this._updatePositionConfig()
+    }
+    //将本实例的zIndex置顶
+    setzIndexToTop() {
+        //计算最大的zIndex
+        let max = Math.max(...Accelerator._instanceList.map(item => item.zIndex))
+        this.attr('zIndex',max + 1)
     }
     destroy() {
         this.emit('beforeDestroy',{target:this})
