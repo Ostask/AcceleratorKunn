@@ -130,6 +130,14 @@ Vue.use(VueAccelerator)
 - 水平方向平铺过去，如果水平方向放不下了就换行  
 ![](https://cdn.jsdelivr.net/gh/Ostask/img-bed//2021020729.gif)
 
+### `config.ratio`
+**（Number） 默认值 1**  
+缩放比例，页面父元素有样式 transform:scale(xxx)的时候用的，让元素的移动和缩放适应这个比例
+
+### `config.zIndex`
+**（Number） 默认值 1**  
+zIndex: zIndex的层级
+
 ## 实例方法
 ### attr(attrName,attrValue)
 更改属性值。建议更改属性都通过这个方法来更改，不然很容易出现dom元素不会重新渲染正确位置的bug
@@ -184,6 +192,9 @@ const Ac = new accelerator(domEl,{x:'100px'}) //父元素大小为1000px
 Ac.changeToPercent('x')
 console.log(Ac.config.x) //'10%'
 ```
+
+### setzIndexToTop()
+将层级置顶
 
 ### destroy()
 销毁实例
@@ -371,6 +382,8 @@ Vue.use(VueAccelerator)
     :axisColor = 'axisColor'
     :resizeClass = 'resizeClass'
     :dragHandler = 'dragHandler'
+    :ratio = 'ratio'
+    :zIndex = 'zIndex'
     @created = 'createdHandler'
     @update = 'updateHandler'
     @destroyed = 'destroyedHandler'
